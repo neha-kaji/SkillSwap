@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillSwap - Connect, Learn, Grow</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+  <style>
+    /* Base Styles */
+    :root {
+      --primary: #ffafcc; /* Light pink */
+      --primary-dark: #ff8fab;
+      --secondary: #ffd7ba; /* Peach */
+      --accent: #cdb4db; /* Lavender */
+      --light: #fff0f3; /* Very light pink */
+      --dark: #a4133c; /* Deep pink */
+      --success: #c7f9cc;
+      --warning: #ffafcc;
+      --gray: #8a817c;
+      --light-gray: #f8e2e9;
+      --form-bg: #ffffff;
+      --form-shadow: rgba(255, 175, 204, 0.3);
+      --university-color: #e91e63;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      line-height: 1.6;
+      color: var(--dark);
+      background-color: var(--light);
+      position: relative;
+      min-height: 100vh;
+    }
+    
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.3s ease;
+    }
+    
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+    
+    /* Header Styles */
+    .header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .logo i {
+      color: var(--secondary);
+    }
+    
+    .nav {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    
+    .nav a {
+      color: white;
+      font-weight: 500;
+      padding: 0.5rem 0;
+      position: relative;
+    }
+    
+    .nav a:hover {
+      color: var(--secondary);
+    }
+    
+    .nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--secondary);
+      transition: width 0.3s ease;
+    }
+    
+    .nav a:hover::after {
+      width: 100%;
+    }
+    
+    /* Auth buttons */
+    .auth-buttons {
+      display: flex;
+      gap: 0.8rem;
+    }
+    
+    .auth-btn {
+      padding: 0.6rem 1.2rem;
+      border-radius: 50px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-login {
+      background: transparent;
+      border: 2px solid white;
+    }
+    
+    .btn-register {
+      background: var(--secondary);
+      color: var(--dark);
+      border: none;
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: var(--dark);
+    }
+    
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 5rem 1rem;
+      background: linear-gradient(rgba(255, 175, 204, 0.8), rgba(255, 143, 171, 0.8)), url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+      color: white;
+      position: relative;
+    }
+    
+    .hero h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      animation: fadeInUp 1s ease;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    
+    .hero p {
+      font-size: 1.3rem;
+      max-width: 700px;
+      margin: 0 auto 2rem;
+      animation: fadeInUp 1s ease 0.2s forwards;
+      opacity: 0;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    
+    /* Auth Section */
+    .auth-section {
+      background: white;
+      padding: 4rem 0;
+      text-align: center;
+    }
+    
+    .auth-container {
+      background: linear-gradient(135deg, var(--light), #ffebf0);
+      border-radius: 20px;
+      padding: 3rem;
+      box-shadow: 0 10px 30px rgba(255, 175, 204, 0.2);
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 2rem;
+    }
+    
+    .auth-content {
+      flex: 1;
+      min-width: 300px;
+      text-align: left;
+    }
+    
+    .auth-content h2 {
+      font-size: 2.2rem;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+    }
+    
+    .auth-content p {
+      color: var(--gray);
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+    
+    .auth-features {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .auth-feature {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .auth-feature i {
+      color: var(--primary);
+      font-size: 1.5rem;
+      background: var(--light);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .auth-buttons-large {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .auth-btn-large {
+      padding: 1.2rem 2.5rem;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .login-btn-large {
+      background: var(--primary);
+      color: white;
+      border: none;
+    }
+    
+    .register-btn-large {
+      background: var(--secondary);
+      color: var(--dark);
+      border: none;
+    }
+    
+    .auth-btn-large:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    
+    .auth-image {
+      flex: 1;
+      min-width: 300px;
+      height: 300px;
+      background: url('https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center center/cover;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+    
+    /* Button Styles */
+    .btn {
+      display: inline-block;
+      padding: 0.8rem 1.8rem;
+      background-color: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(205, 180, 219, 0.4);
+      animation: fadeInUp 1s ease 0.4s forwards;
+      opacity: 0;
+    }
+    
+    .btn:hover {
+      background-color: #b8a0c9;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(205, 180, 219, 0.6);
+    }
+    
+    .btn-outline {
+      background: transparent;
+      border: 2px solid white;
+      box-shadow: none;
+    }
+    
+    .btn-outline:hover {
+      background: white;
+      color: var(--primary);
+    }
+    
+    /* Features Section */
+    .features {
+      padding: 4rem 0;
+      background-color: white;
+    }
+    
+    .section-title {
+      text-align: center;
+      margin-bottom: 3rem;
+      position: relative;
+    }
+    
+    .section-title h2 {
+      font-size: 2rem;
+      color: var(--primary);
+      display: inline-block;
+    }
+    
+    .section-title h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background-color: var(--accent);
+    }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    
+    .card {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+      text-align: center;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card i {
+      font-size: 2.5rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    
+    .card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+    
+    /* University Highlight */
+    .university-highlight {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      padding: 4rem 0;
+      text-align: center;
+      margin: 4rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .university-highlight::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      left: -50px;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+    }
+    
+    .university-highlight::after {
+      content: '';
+      position: absolute;
+      bottom: -80px;
+      right: -80px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+    }
+    
+    .university-highlight h2 {
+      font-size: 2.2rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .university-highlight p {
+      max-width: 800px;
+      margin: 0 auto 1.5rem;
+      font-size: 1.1rem;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .campus-image {
+      width: 100%;
+      max-width: 800px;
+      height: 300px;
+      margin: 2.5rem auto;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+      background: url('https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-1.2.1&auto=format&fit=crop&w=1080&q=80') center center/cover;
+      position: relative;
+      z-index: 1;
+      border: 5px solid white;
+    }
+    
+    /* Authentication Modal */
+    .auth-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .modal-container {
+      background: white;
+      border-radius: 18px;
+      width: 90%;
+      max-width: 450px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+      position: relative;
+    }
+    
+    .auth-header {
+      background: linear-gradient(to right, var(--primary), var(--primary-dark));
+      color: white;
+      padding: 1.8rem;
+      text-align: center;
+    }
+    
+    .auth-header h2 {
+      font-size: 1.6rem;
+      font-weight: 600;
+    }
+    
+    .auth-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--light-gray);
+    }
+    
+    .auth-tab {
+      flex: 1;
+      text-align: center;
+      padding: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      background: var(--light);
+    }
+    
+    .auth-tab.active {
+      background: white;
+      border-bottom: 3px solid var(--primary);
+      color: var(--primary);
+    }
+    
+    .auth-body {
+      padding: 1.8rem;
+    }
+    
+    .auth-form {
+      display: none;
+    }
+    
+    .auth-form.active {
+      display: block;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--dark);
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 1rem 1.2rem;
+      border: 2px solid var(--light-gray);
+      border-radius: 10px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(205, 180, 219, 0.2);
+      outline: none;
+    }
+    
+    .btn-auth {
+      width: 100%;
+      padding: 1.1rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 1rem;
+      font-size: 1.05rem;
+      box-shadow: 0 4px 10px rgba(255,175,204,0.3);
+    }
+    
+    .btn-auth:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(255,175,204,0.4);
+    }
+    
+    .auth-footer {
+      text-align: center;
+      padding: 1.2rem;
+      border-top: 1px solid var(--light-gray);
+      font-size: 0.95rem;
+    }
+    
+    .auth-footer a {
+      color: var(--primary);
+      font-weight: 500;
+    }
+    
+    .close-modal {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 2rem;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+    
+    .close-modal:hover {
+      background: rgba(255,255,255,0.2);
+    }
+    
+    /* Footer */
+    .footer {
+      background: var(--dark);
+      color: white;
+      padding: 3rem 0 2rem;
+      text-align: center;
+      margin-top: 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      left: -50px;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+    }
+    
+    .footer p {
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .social-links a {
+      font-size: 1.4rem;
+      color: white;
+      transition: all 0.3s ease;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.1);
+    }
+    
+    .social-links a:hover {
+      color: var(--primary);
+      background: white;
+      transform: translateY(-5px);
+    }
+    
+    .university-address {
+      background: rgba(255,255,255,0.1);
+      padding: 1.5rem;
+      border-radius: 12px;
+      max-width: 600px;
+      margin: 1.5rem auto;
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* Notification */
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 25px;
+      border-radius: 8px;
+      color: white;
+      font-weight: 500;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      z-index: 3000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transform: translateX(120%);
+      transition: transform 0.3s ease;
+    }
+    
+    .notification.show {
+      transform: translateX(0);
+    }
+    
+    .notification.success {
+      background: #4CAF50;
+    }
+    
+    .notification.error {
+      background: #F44336;
+    }
+    
+    .notification i {
+      font-size: 1.2rem;
+    }
+    
+    /* Page Content */
+    .page-content {
+      display: none;
+    }
+    
+    .page-content.active {
+      display: block;
+    }
+    
+    /* Skills Page */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 2rem;
+      padding: 2rem 0;
+    }
+    
+    .skill-card {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+    
+    .skill-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+    
+    .skill-image {
+      height: 180px;
+      background-size: cover;
+      background-position: center;
+    }
+    
+    .skill-content {
+      padding: 1.5rem;
+    }
+    
+    .skill-content h3 {
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .skill-content p {
+      color: var(--gray);
+      margin-bottom: 1rem;
+    }
+    
+    .skill-meta {
+      display: flex;
+      justify-content: space-between;
+      color: var(--primary-dark);
+      font-size: 0.9rem;
+    }
+    
+    /* Submit Page */
+    .submit-form {
+      max-width: 600px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    }
+    
+    /* Contact Page */
+    .contact-container {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      gap: 2rem;
+      padding: 2rem 0;
+    }
+    
+    .contact-info {
+      flex: 1;
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    }
+    
+    .contact-info h3 {
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+    
+    .contact-info p {
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    
+    .contact-form {
+      flex: 1;
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    }
+    
+    /* Protected Content */
+    .protected-content {
+      display: none;
+    }
+    
+    .protected-content.unlocked {
+      display: block;
+    }
+    
+    .locked-section {
+      background: var(--light);
+      border-radius: 15px;
+      padding: 3rem;
+      text-align: center;
+      max-width: 600px;
+      margin: 3rem auto;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    
+    .locked-icon {
+      font-size: 4rem;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+    
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .header .container {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .nav {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .auth-container {
+        flex-direction: column;
+        padding: 2rem;
+      }
+      
+      .auth-image {
+        min-height: 250px;
+      }
+      
+      .contact-container {
+        flex-direction: column;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+      
+      .hero p {
+        font-size: 1.1rem;
+      }
+      
+      .auth-buttons-large {
+        flex-direction: column;
+      }
+      
+      .auth-btn-large {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Notification System -->
+  <div class="notification" id="notification">
+    <i class="fas fa-check-circle"></i>
+    <span id="notification-text">Success message</span>
+  </div>
+
+  <!-- Authentication Modal -->
+  <div class="auth-modal" id="auth-modal">
+    <div class="modal-container">
+      <div class="auth-header">
+        <h2 id="auth-modal-title">Welcome to SkillSwap</h2>
+        <button class="close-modal" id="close-modal">&times;</button>
+      </div>
+      <div class="auth-tabs">
+        <div class="auth-tab active" data-tab="login">Sign In</div>
+        <div class="auth-tab" data-tab="register">Sign Up</div>
+      </div>
+      <div class="auth-body">
+        <form id="login-form" class="auth-form active">
+          <div class="form-group">
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" class="form-control" required placeholder="your@email.com">
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" class="form-control" required placeholder="••••••••">
+          </div>
+          <button type="submit" class="btn-auth">Sign In</button>
+          <div class="auth-footer">
+            <p>Don't have an account? <a href="#" id="switch-to-register">Sign Up</a></p>
+          </div>
+        </form>
+        
+        <form id="register-form" class="auth-form">
+          <div class="form-group">
+            <label for="register-name">Full Name</label>
+            <input type="text" id="register-name" class="form-control" required placeholder="Your full name">
+          </div>
+          <div class="form-group">
+            <label for="register-email">Email</label>
+            <input type="email" id="register-email" class="form-control" required placeholder="your@email.com">
+          </div>
+          <div class="form-group">
+            <label for="register-password">Password</label>
+            <input type="password" id="register-password" class="form-control" required placeholder="••••••••">
+          </div>
+          <div class="form-group">
+            <label for="register-confirm">Confirm Password</label>
+            <input type="password" id="register-confirm" class="form-control" required placeholder="••••••••">
+          </div>
+          <button type="submit" class="btn-auth">Create Account</button>
+          <div class="auth-footer">
+            <p>Already have an account? <a href="#" id="switch-to-login">Sign In</a></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <i class="fas fa-exchange-alt"></i>
+        <span>SkillSwap</span>
+      </div>
+      <nav class="nav">
+        <a href="#" class="nav-link active" data-page="home">Home</a>
+        <a href="#" class="nav-link protected-link" data-page="skills" style="display:none">Skills</a>
+        <a href="#" class="nav-link protected-link" data-page="submit" style="display:none">Submit Skill</a>
+        <a href="#" class="nav-link protected-link" data-page="contact" style="display:none">Contact</a>
+        
+        <div class="auth-buttons" id="auth-buttons">
+          <button class="auth-btn btn-login" id="login-btn">Login</button>
+          <button class="auth-btn btn-register" id="register-btn">Register</button>
+        </div>
+        
+        <div class="user-info" id="user-info" style="display:none">
+          <div class="user-avatar" id="user-avatar">NK</div>
+          <span id="user-name">Neha K.</span>
+          <button class="auth-btn btn-login" id="logout-btn">Logout</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page Content -->
+  <main>
+    <!-- Home Page -->
+    <div id="home-page" class="page-content active">
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="container">
+          <h1>Swap Skills. Learn. Grow Together.</h1>
+          <p>Connect with fellow students at Sanjay Ghodawat University to teach and learn amazing new skills in a collaborative environment.</p>
+          <a href="#" class="btn" id="explore-btn">Explore Skills</a>
+        </div>
+      </section>
+      
+      <!-- Auth Section -->
+      <section class="auth-section">
+        <div class="container">
+          <div class="auth-container">
+            <div class="auth-content">
+              <h2>Join Our Community</h2>
+              <p>Create an account to unlock the full potential of SkillSwap. Connect with peers, share your expertise, and discover new skills to learn.</p>
+              
+              <div class="auth-features">
+                <div class="auth-feature">
+                  <i class="fas fa-users"></i>
+                  <div>
+                    <h3>Build Connections</h3>
+                    <p>Connect with students who share your interests</p>
+                  </div>
+                </div>
+                
+                <div class="auth-feature">
+                  <i class="fas fa-lightbulb"></i>
+                  <div>
+                    <h3>Share Your Skills</h3>
+                    <p>Teach others what you're passionate about</p>
+                  </div>
+                </div>
+                
+                <div class="auth-feature">
+                  <i class="fas fa-calendar-alt"></i>
+                  <div>
+                    <h3>Join Sessions</h3>
+                    <p>Participate in skill-sharing sessions on campus</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="auth-buttons-large">
+                <button class="auth-btn-large login-btn-large" id="login-btn-large">
+                  <i class="fas fa-sign-in-alt"></i>
+                  Sign In to Your Account
+                </button>
+                <button class="auth-btn-large register-btn-large" id="register-btn-large">
+                  <i class="fas fa-user-plus"></i>
+                  Create New Account
+                </button>
+              </div>
+            </div>
+            
+            <div class="auth-image"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section class="features">
+        <div class="container">
+          <div class="section-title">
+            <h2>Why SkillSwap?</h2>
+          </div>
+          <div class="grid">
+            <div class="card">
+              <i class="fas fa-chalkboard-teacher"></i>
+              <h3>Offer a Skill</h3>
+              <p>Share what you're great at – from coding to cooking! Empower others with your knowledge.</p>
+            </div>
+            <div class="card">
+              <i class="fas fa-lightbulb"></i>
+              <h3>Learn Something New</h3>
+              <p>Pick up a new hobby, subject, or technical skill from peers who are passionate to teach.</p>
+            </div>
+            <div class="card">
+              <i class="fas fa-users"></i>
+              <h3>Grow Together</h3>
+              <p>Join a growing community of learners and sharers. Build connections that last beyond college.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- University Highlight -->
+      <section class="university-highlight">
+        <div class="container">
+          <h2>Sanjay Ghodawat University</h2>
+          <p>Located in the beautiful town of Atigre, Kolhapur, our campus provides the perfect environment for learning and skill development.</p>
+          <p>Join SkillSwap to connect with fellow students and enhance your university experience.</p>
+          <div class="campus-image"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Skills Page -->
+    <div id="skills-page" class="page-content">
+      <section class="hero">
+        <div class="container">
+          <h1>Available Skills</h1>
+          <p>Browse and learn from the diverse skills offered by your peers</p>
+          <a href="#" class="btn" data-page="submit">Share Your Skill</a>
+        </div>
+      </section>
+
+      <div class="container">
+        <div class="section-title">
+          <h2>Popular Skills</h2>
+        </div>
+        
+        <div class="skills-grid">
+          <div class="skill-card">
+            <div class="skill-image" style="background-image: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')"></div>
+            <div class="skill-content">
+              <h3>Web Development</h3>
+              <p>Learn HTML, CSS, JavaScript and modern frameworks from experienced developers.</p>
+              <div class="skill-meta">
+                <span><i class="fas fa-user"></i> Raj P.</span>
+                <span><i class="fas fa-users"></i> 12 learners</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="skill-card">
+            <div class="skill-image" style="background-image: url('https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')"></div>
+            <div class="skill-content">
+              <h3>Graphic Design</h3>
+              <p>Master Photoshop, Illustrator and design principles with hands-on projects.</p>
+              <div class="skill-meta">
+                <span><i class="fas fa-user"></i> Priya S.</span>
+                <span><i class="fas fa-users"></i> 8 learners</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="skill-card">
+            <div class="skill-image" style="background-image: url('https://images.unsplash.com/photo-1515879218367-8466d910aaa4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')"></div>
+            <div class="skill-content">
+              <h3>Python Programming</h3>
+              <p>From basics to data analysis, learn Python with practical examples.</p>
+              <div class="skill-meta">
+                <span><i class="fas fa-user"></i> Amit K.</span>
+                <span><i class="fas fa-users"></i> 15 learners</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="skill-card">
+            <div class="skill-image" style="background-image: url('https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')"></div>
+            <div class="skill-content">
+              <h3>Cooking Basics</h3>
+              <p>Learn to cook delicious and healthy meals with simple ingredients.</p>
+              <div class="skill-meta">
+                <span><i class="fas fa-user"></i> Neha M.</span>
+                <span><i class="fas fa-users"></i> 20 learners</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit Skill Page -->
+    <div id="submit-page" class="page-content">
+      <section class="hero">
+        <div class="container">
+          <h1>Share Your Skill</h1>
+          <p>Contribute to the community by teaching what you know</p>
+        </div>
+      </section>
+
+      <div class="container">
+        <div class="submit-form">
+          <div class="section-title">
+            <h2>Submit a New Skill</h2>
+          </div>
+          
+          <form id="skill-form">
+            <div class="form-group">
+              <label for="skill-name">Skill Name</label>
+              <input type="text" id="skill-name" class="form-control" required placeholder="e.g., Web Development, Cooking, Photography">
+            </div>
+            
+            <div class="form-group">
+              <label for="skill-category">Category</label>
+              <select id="skill-category" class="form-control" required>
+                <option value="">Select a category</option>
+                <option value="technology">Technology</option>
+                <option value="design">Design</option>
+                <option value="business">Business</option>
+                <option value="arts">Arts & Crafts</option>
+                <option value="lifestyle">Lifestyle</option>
+                <option value="academic">Academic</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="skill-description">Description</label>
+              <textarea id="skill-description" class="form-control" rows="4" required placeholder="Describe what you'll teach and what students will learn"></textarea>
+            </div>
+            
+            <div class="form-group">
+              <label for="skill-level">Skill Level</label>
+              <select id="skill-level" class="form-control" required>
+                <option value="">Select skill level</option>
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
+              </select>
+            </div>
+            
+            <button type="submit" class="btn-auth">Submit Skill</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Page -->
+    <div id="contact-page" class="page-content">
+      <section class="hero">
+        <div class="container">
+          <h1>Contact Us</h1>
+          <p>Get in touch with the SkillSwap team</p>
+        </div>
+      </section>
+
+      <div class="container">
+        <div class="contact-container">
+          <div class="contact-info">
+            <h3>Contact Information</h3>
+            <p><i class="fas fa-map-marker-alt"></i> Sanjay Ghodawat University, Atigre, Kolhapur</p>
+            <p><i class="fas fa-phone"></i> +91 9112912786</p>
+            <p><i class="fas fa-envelope"></i> nehakaji616@gmail.com</p>
+            <p><i class="fas fa-clock"></i> Monday-Friday: 9:00 AM - 5:00 PM</p>
+            
+            <h3>Follow Us</h3>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-facebook-f"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+          
+          <div class="contact-form">
+            <h3>Send Us a Message</h3>
+            <form id="contact-form">
+              <div class="form-group">
+                <label for="contact-name">Your Name</label>
+                <input type="text" id="contact-name" class="form-control" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="contact-email">Email</label>
+                <input type="email" id="contact-email" class="form-control" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="contact-subject">Subject</label>
+                <input type="text" id="contact-subject" class="form-control" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="contact-message">Message</label>
+                <textarea id="contact-message" class="form-control" rows="4" required></textarea>
+              </div>
+              
+              <button type="submit" class="btn-auth">Send Message</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="social-links">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+      
+      <div class="university-address">
+        <p><i class="fas fa-map-marker-alt"></i> Sanjay Ghodawat University</p>
+        <p>Atigre, Kolhapur - 416118, Maharashtra, India</p>
+        <p><i class="fas fa-phone"></i> +91 9112912786 | <i class="fas fa-envelope"></i> nehakaji616@gmail.com</p>
+      </div>
+      
+      <p>© 2025 SkillSwap | Sanjay Ghodawat University, Atigre, Kolhapur</p>
+      <p>Connect. Learn. Grow Together.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCwdBZNqPOLDrikKEN03vDZtxoQsbWmq_o",
+      authDomain: "skillswap-546e4.firebaseapp.com",
+      projectId: "skillswap-546e4",
+      storageBucket: "skillswap-546e4.appspot.com",
+      messagingSenderId: "414533410478",
+      appId: "1:414533410478:web:b6ee065b796efb8a95573f",
+      measurementId: "G-0XNLB842MV"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    
+    // DOM Elements
+    const authModal = document.getElementById('auth-modal');
+    const loginBtn = document.getElementById('login-btn');
+    const registerBtn = document.getElementById('register-btn');
+    const loginBtnLarge = document.getElementById('login-btn-large');
+    const registerBtnLarge = document.getElementById('register-btn-large');
+    const closeModal = document.getElementById('close-modal');
+    const switchToRegister = document.getElementById('switch-to-register');
+    const switchToLogin = document.getElementById('switch-to-login');
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    const authButtons = document.getElementById('auth-buttons');
+    const userInfo = document.getElementById('user-info');
+    const userName = document.getElementById('user-name');
+    const userAvatar = document.getElementById('user-avatar');
+    const logoutBtn = document.getElementById('logout-btn');
+    const notification = document.getElementById('notification');
+    const notificationText = document.getElementById('notification-text');
+    const exploreBtn = document.getElementById('explore-btn');
+    
+    // Auth Tabs
+    const authTabs = document.querySelectorAll('.auth-tab');
+    
+    // Page Navigation
+    const navLinks = document.querySelectorAll('.nav-link');
+    const pages = {
+      home: document.getElementById('home-page'),
+      skills: document.getElementById('skills-page'),
+      submit: document.getElementById('submit-page'),
+      contact: document.getElementById('contact-page')
+    };
+    
+    // Show notification
+    function showNotification(message, isSuccess = true) {
+      notificationText.textContent = message;
+      notification.className = isSuccess ? 
+        'notification success show' : 
+        'notification error show';
+      
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, 3000);
+    }
+    
+    // Set active page
+    function setActivePage(page) {
+      // Check if page requires authentication
+      const protectedPages = ['skills', 'submit', 'contact'];
+      const user = auth.currentUser;
+      
+      if (protectedPages.includes(page) && !user) {
+        showNotification('Please login to access this page', false);
+        openAuthModal();
+        switchTab('login');
+        return;
+      }
+      
+      // Hide all pages
+      Object.values(pages).forEach(p => {
+        if (p) p.classList.remove('active');
+      });
+      
+      // Show selected page
+      if (pages[page]) {
+        pages[page].classList.add('active');
+      } else {
+        pages.home.classList.add('active');
+      }
+      
+      // Update active nav link
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.dataset.page === page) {
+          link.classList.add('active');
+        }
+      });
+      
+      // Scroll to top
+      window.scrollTo(0, 0);
+    }
+    
+    // Add click event to nav links
+    navLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const page = this.dataset.page;
+        setActivePage(page);
+      });
+    });
+    
+    // Initialize with home page
+    setActivePage('home');
+    
+    // Auth Modal Functions
+    function openAuthModal() {
+      authModal.style.display = 'flex';
+    }
+    
+    function closeAuthModal() {
+      authModal.style.display = 'none';
+    }
+    
+    function switchTab(tabName) {
+      // Update tabs
+      authTabs.forEach(tab => {
+        if (tab.dataset.tab === tabName) {
+          tab.classList.add('active');
+        } else {
+          tab.classList.remove('active');
+        }
+      });
+      
+      // Update forms
+      document.querySelectorAll('.auth-form').forEach(form => {
+        if (form.id === `${tabName}-form`) {
+          form.classList.add('active');
+        } else {
+          form.classList.remove('active');
+        }
+      });
+    }
+    
+    // Event Listeners for Auth Modal
+    loginBtn.addEventListener('click', () => {
+      openAuthModal();
+      switchTab('login');
+    });
+    
+    registerBtn.addEventListener('click', () => {
+      openAuthModal();
+      switchTab('register');
+    });
+    
+    loginBtnLarge.addEventListener('click', () => {
+      openAuthModal();
+      switchTab('login');
+    });
+    
+    registerBtnLarge.addEventListener('click', () => {
+      openAuthModal();
+      switchTab('register');
+    });
+    
+    exploreBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openAuthModal();
+      switchTab('login');
+    });
+    
+    closeModal.addEventListener('click', closeAuthModal);
+    
+    switchToRegister.addEventListener('click', (e) => {
+      e.preventDefault();
+      switchTab('register');
+    });
+    
+    switchToLogin.addEventListener('click', (e) => {
+      e.preventDefault();
+      switchTab('login');
+    });
+    
+    authTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        switchTab(tab.dataset.tab);
+      });
+    });
+    
+    // Close modal when clicking outside
+    window.addEventListener('click', (e) => {
+      if (e.target === authModal) {
+        closeAuthModal();
+      }
+    });
+    
+    // Firebase Authentication Functions
+    // Register new user
+    registerForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const name = registerForm['register-name'].value;
+      const email = registerForm['register-email'].value;
+      const password = registerForm['register-password'].value;
+      const confirm = registerForm['register-confirm'].value;
+      
+      if (password !== confirm) {
+        showNotification("Passwords don't match", false);
+        return;
+      }
+      
+      if (password.length < 6) {
+        showNotification("Password must be at least 6 characters", false);
+        return;
+      }
+      
+      // Create user with email and password
+      auth.createUserWithEmailAndPassword(email, password)
+        .then(cred => {
+          // Update user profile with name
+          return cred.user.updateProfile({
+            displayName: name
+          });
+        })
+        .then(() => {
+          showNotification("Account created successfully!");
+          closeAuthModal();
+          registerForm.reset();
+        })
+        .catch(err => {
+          showNotification(err.message, false);
+        });
+    });
+    
+    // Login existing user
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const email = loginForm['login-email'].value;
+      const password = loginForm['login-password'].value;
+      
+      auth.signInWithEmailAndPassword(email, password)
+        .then(() => {
+          showNotification("Logged in successfully!");
+          closeAuthModal();
+          loginForm.reset();
+        })
+        .catch(err => {
+          showNotification(err.message, false);
+        });
+    });
+    
+    // Logout
+    logoutBtn.addEventListener('click', () => {
+      auth.signOut()
+        .then(() => {
+          showNotification("Logged out successfully!");
+          setActivePage('home');
+        })
+        .catch(err => {
+          showNotification(err.message, false);
+        });
+    });
+    
+    // Track auth state
+    auth.onAuthStateChanged(user => {
+      const protectedLinks = document.querySelectorAll('.nav-link.protected-link');
+      
+      if (user) {
+        // User is signed in
+        authButtons.style.display = 'none';
+        userInfo.style.display = 'flex';
+        userName.textContent = user.displayName || user.email;
+        userAvatar.textContent = user.displayName ? 
+          user.displayName.charAt(0).toUpperCase() : 
+          user.email.charAt(0).toUpperCase();
+          
+        // Show protected navigation links
+        protectedLinks.forEach(link => {
+          link.style.display = 'block';
+        });
+      } else {
+        // User is signed out
+        authButtons.style.display = 'flex';
+        userInfo.style.display = 'none';
+        
+        // Hide protected navigation links
+        protectedLinks.forEach(link => {
+          link.style.display = 'none';
+        });
+      }
+    });
+    
+    // Form submission handlers
+    document.getElementById('skill-form')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      showNotification("Skill submitted successfully! We'll review it soon.");
+      e.target.reset();
+      setActivePage('skills');
+    });
+    
+    document.getElementById('contact-form')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      showNotification("Message sent successfully! We'll get back to you soon.");
+      e.target.reset();
+    });
+    
+    // Initialize the app
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check if user is logged in
+      auth.onAuthStateChanged(user => {
+        if (!user) {
+          authButtons.style.display = 'flex';
+          userInfo.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
