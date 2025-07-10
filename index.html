@@ -78,7 +78,7 @@
     }
     
     .logo-img {
-      height: 48px;
+      height: 80px;
       width: auto;
       border-radius: 8px;
     }
@@ -103,6 +103,11 @@
       font-weight: 500;
       padding: 0.5rem 0;
       position: relative;
+      min-height: 48px;
+      min-width: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
     .nav a:hover {
@@ -136,6 +141,11 @@
       font-weight: 500;
       cursor: pointer;
       transition: all 0.3s ease;
+      min-height: 48px;
+      min-width: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
     .btn-login {
@@ -275,6 +285,8 @@
       align-items: center;
       gap: 0.8rem;
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      min-height: 48px;
+      min-width: 48px;
     }
     
     .login-btn-large {
@@ -317,6 +329,11 @@
       box-shadow: 0 4px 15px rgba(205, 180, 219, 0.4);
       animation: fadeInUp 1s ease 0.4s forwards;
       opacity: 0;
+      min-height: 48px;
+      min-width: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
     .btn:hover {
@@ -454,7 +471,7 @@
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-      background: url('https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-1.2.1&auto=format&fit=crop&w=1080&q=80') center center/cover;
+      background: url('uni.jpg') center center/cover;
       position: relative;
       z-index: 1;
       border: 5px solid white;
@@ -509,6 +526,11 @@
       transition: all 0.3s ease;
       font-weight: 500;
       background: var(--light);
+      min-height: 48px;
+      min-width: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
     .auth-tab.active {
@@ -569,6 +591,11 @@
       margin-top: 1rem;
       font-size: 1.05rem;
       box-shadow: 0 4px 10px rgba(255,175,204,0.3);
+      min-height: 48px;
+      min-width: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
     .btn-auth:hover {
@@ -605,6 +632,8 @@
       justify-content: center;
       border-radius: 50%;
       transition: all 0.3s ease;
+      min-height: 48px;
+      min-width: 48px;
     }
     
     .close-modal:hover {
@@ -659,6 +688,8 @@
       align-items: center;
       justify-content: center;
       background: rgba(255,255,255,0.1);
+      min-height: 48px;
+      min-width: 48px;
     }
     
     .social-links a:hover {
@@ -881,6 +912,8 @@
       align-items: center;
       gap: 0.8rem;
       transition: all 0.3s ease;
+      min-height: 48px;
+      min-width: 48px;
     }
     
     .btn-primary {
@@ -1032,17 +1065,22 @@
     @media (max-width: 480px) {
       .hero h1 {
         font-size: 2rem;
+        line-height: 1.2;
       }
       
       .hero p {
-        font-size: 1.1rem;
+        font-size: 1rem;
+      }
+      
+      .hero, .features, .auth-section, .university-highlight {
+        padding: 2rem 1rem;
       }
       
       .auth-buttons-large {
         flex-direction: column;
       }
       
-      .auth-btn-large {
+      .auth-btn-large, .btn {
         width: 100%;
         justify-content: center;
       }
@@ -1054,6 +1092,57 @@
       .welcome-btn {
         width: 100%;
         justify-content: center;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .community-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .header .container {
+        padding: 0.5rem;
+      }
+      
+      .logo-text {
+        font-size: 2rem;
+      }
+      
+      .auth-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+      }
+      
+      .footer {
+        padding: 2rem 0;
+      }
+      
+      .university-highlight::before,
+      .university-highlight::after {
+        display: none;
+      }
+      
+      .submit-form, .contact-form {
+        padding: 1.5rem;
+      }
+      
+      /* Prevent zooming on input focus in mobile browsers */
+      input, select, textarea {
+        font-size: 16px;
+      }
+    }
+    
+    /* Animation */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
       }
     }
   </style>
@@ -1123,7 +1212,7 @@
     <div class="container">
       <div class="logo">
         <!-- Using base64 encoded SVG logo -->
-        <img src="logo.png" class="logo-img">
+        <img src="logo.png" alt="SkillSwap Logo" class="logo-img">
         <span class="logo-text">SkillSwap</span>
       </div>
       <nav class="nav">
@@ -1187,19 +1276,19 @@
           
           <div class="stats-grid">
             <div class="stat-card">
-              <div class="stat-number" id="users-count">1,250+</div>
+              <div class="stat-number" id="users-count">100+</div>
               <div class="stat-text">Active Users</div>
             </div>
             <div class="stat-card">
-              <div class="stat-number" id="skills-count">85+</div>
+              <div class="stat-number" id="skills-count">10+</div>
               <div class="stat-text">Skills Offered</div>
             </div>
             <div class="stat-card">
-              <div class="stat-number" id="sessions-count">320+</div>
+              <div class="stat-number" id="sessions-count">50+</div>
               <div class="stat-text">Learning Sessions</div>
             </div>
             <div class="stat-card">
-              <div class="stat-number" id="connections-count">1,800+</div>
+              <div class="stat-number" id="connections-count">80+</div>
               <div class="stat-text">Connections Made</div>
             </div>
           </div>
@@ -1254,7 +1343,7 @@
       </section>
       
       <!-- Auth Section -->
-      <section class="auth-section">
+      <section class="auth-section" id="auth-section">
         <div class="container">
           <div class="auth-container">
             <div class="auth-content">
@@ -1332,14 +1421,13 @@
       
       <!-- University Highlight -->
       <section class="university-highlight">
-        <div class="container">
-          <h2>Sanjay Ghodawat University</h2>
-          <p>Located in the beautiful town of Atigre, Kolhapur, our campus provides the perfect environment for learning and skill development.</p>
-          <p>Join SkillSwap to connect with fellow students and enhance your university experience.</p>
-          <div class="campus-image"></div>
-        </div>
-      </section>
-    </div>
+      <div class="container">
+        <h2>Sanjay Ghodawat University</h2>
+        <p>Located in the beautiful town of Atigre, Kolhapur, our campus provides the perfect environment for learning and skill development.</p>
+        <p>Join SkillSwap to connect with fellow students and enhance your university experience.</p>
+    <div class="campus-image"></div>
+  </div>
+</section>
 
     <!-- Skills Page -->
     <div id="skills-page" class="page-content">
@@ -1579,6 +1667,7 @@
     const exploreBtn = document.getElementById('explore-btn');
     const userGreeting = document.getElementById('user-greeting');
     const homeProtected = document.getElementById('home-protected');
+    const authSection = document.getElementById('auth-section');
     
     // Auth Tabs
     const authTabs = document.querySelectorAll('.auth-tab');
@@ -1831,6 +1920,11 @@
         
         // Show protected content
         homeProtected.classList.add('unlocked');
+        
+        // Hide auth section
+        if (authSection) {
+          authSection.style.display = 'none';
+        }
       } else {
         // User is signed out
         authButtons.style.display = 'flex';
@@ -1843,6 +1937,11 @@
         
         // Hide protected content
         homeProtected.classList.remove('unlocked');
+        
+        // Show auth section
+        if (authSection) {
+          authSection.style.display = 'block';
+        }
       }
     });
     
@@ -1868,6 +1967,9 @@
           authButtons.style.display = 'flex';
           userInfo.style.display = 'none';
           homeProtected.classList.remove('unlocked');
+          if (authSection) authSection.style.display = 'block';
+        } else {
+          if (authSection) authSection.style.display = 'none';
         }
       });
     });
