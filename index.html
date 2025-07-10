@@ -72,11 +72,20 @@
     }
     
     .logo {
-      font-size: 1.8rem;
-      font-weight: 700;
       display: flex;
       align-items: center;
       gap: 0.5rem;
+    }
+    
+    .logo-img {
+      height: 48px;
+      width: auto;
+      border-radius: 8px;
+    }
+    
+    .logo-text {
+      font-size: 1.8rem;
+      font-weight: 700;
     }
     
     .logo i {
@@ -831,6 +840,156 @@
       margin-bottom: 1.5rem;
     }
     
+    /* Welcome Section */
+    .welcome-section {
+      padding: 4rem 0;
+      text-align: center;
+      background: linear-gradient(135deg, var(--accent), #b8a0c9);
+      color: white;
+    }
+    
+    .welcome-section .container {
+      max-width: 800px;
+    }
+    
+    .welcome-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .welcome-section p {
+      font-size: 1.2rem;
+      margin-bottom: 2.5rem;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .welcome-actions {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    
+    .welcome-btn {
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+      background: white;
+      color: var(--accent);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .btn-secondary {
+      background: transparent;
+      border: 2px solid white;
+    }
+    
+    .welcome-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.1);
+    }
+    
+    /* Stats Section */
+    .stats-section {
+      background: white;
+      padding: 4rem 0;
+      text-align: center;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    
+    .stat-card {
+      background: var(--light);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    
+    .stat-number {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    /* Community Section */
+    .community-section {
+      background: var(--light);
+      padding: 4rem 0;
+    }
+    
+    .community-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    
+    .community-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    
+    .community-image {
+      height: 200px;
+      background-size: cover;
+      background-position: center;
+    }
+    
+    .community-content {
+      padding: 1.5rem;
+    }
+    
+    .community-content h3 {
+      color: var(--primary);
+      margin-bottom: 0.8rem;
+    }
+    
+    .community-content p {
+      color: var(--gray);
+      margin-bottom: 1rem;
+    }
+    
+    .community-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      color: var(--primary-dark);
+    }
+    
+    .community-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: var(--dark);
+    }
+    
     /* Responsive Styles */
     @media (max-width: 768px) {
       .header .container {
@@ -864,6 +1023,10 @@
       .contact-container {
         flex-direction: column;
       }
+      
+      .welcome-section h2 {
+        font-size: 2rem;
+      }
     }
     
     @media (max-width: 480px) {
@@ -880,6 +1043,15 @@
       }
       
       .auth-btn-large {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .welcome-actions {
+        flex-direction: column;
+      }
+      
+      .welcome-btn {
         width: 100%;
         justify-content: center;
       }
@@ -950,8 +1122,9 @@
   <header class="header">
     <div class="container">
       <div class="logo">
-        <i class="fas fa-exchange-alt"></i>
-        <span>SkillSwap</span>
+        <!-- Using base64 encoded SVG logo -->
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIxOCIgZmlsbD0iI2ZmYWZjYyIvPjxwYXRoIGQ9Ik0xMiAyMCBMMjAgMTIgTDI4IDIwIEwyMCAyOCBaIiBmaWxsPSJ3aGl0ZSIvPjxwYXRoIGQ9Ik0xMiAyMCBMMjAgMTIgTDI4IDIwIEwyMCAyOCBaIiBzdHJva2U9IiNlOTFlNjMiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==" alt="SkillSwap Logo" class="logo-img">
+        <span class="logo-text">SkillSwap</span>
       </div>
       <nav class="nav">
         <a href="#" class="nav-link active" data-page="home">Home</a>
@@ -983,6 +1156,100 @@
           <h1>Swap Skills. Learn. Grow Together.</h1>
           <p>Connect with fellow students at Sanjay Ghodawat University to teach and learn amazing new skills in a collaborative environment.</p>
           <a href="#" class="btn" id="explore-btn">Explore Skills</a>
+        </div>
+      </section>
+      
+      <!-- Welcome Section (Visible after login) -->
+      <section class="welcome-section protected-content" id="home-protected">
+        <div class="container">
+          <h2>Welcome back, <span id="user-greeting">Neha</span>!</h2>
+          <p>We're excited to have you back! Discover new skills shared by peers or contribute your expertise to help others grow.</p>
+          
+          <div class="welcome-actions">
+            <a href="#" class="welcome-btn btn-primary" data-page="skills">
+              <i class="fas fa-search"></i>
+              Browse Skills
+            </a>
+            <a href="#" class="welcome-btn btn-secondary" data-page="submit">
+              <i class="fas fa-plus"></i>
+              Share a Skill
+            </a>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Stats Section -->
+      <section class="stats-section">
+        <div class="container">
+          <div class="section-title">
+            <h2>SkillSwap Community</h2>
+          </div>
+          
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-number" id="users-count">1,250+</div>
+              <div class="stat-text">Active Users</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number" id="skills-count">85+</div>
+              <div class="stat-text">Skills Offered</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number" id="sessions-count">320+</div>
+              <div class="stat-text">Learning Sessions</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number" id="connections-count">1,800+</div>
+              <div class="stat-text">Connections Made</div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Community Highlights -->
+      <section class="community-section">
+        <div class="container">
+          <div class="section-title">
+            <h2>Recent Community Activities</h2>
+          </div>
+          
+          <div class="community-grid">
+            <div class="community-card">
+              <div class="community-image" style="background-image: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')"></div>
+              <div class="community-content">
+                <h3>Photography Workshop</h3>
+                <p>Learn the art of capturing moments from our expert photographers</p>
+                <div class="community-meta">
+                  <div class="community-avatar">RS</div>
+                  <span>Raj Sharma</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="community-card">
+              <div class="community-image" style="background-image: url('https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')"></div>
+              <div class="community-content">
+                <h3>Web Development Bootcamp</h3>
+                <p>Build responsive websites with HTML, CSS and JavaScript</p>
+                <div class="community-meta">
+                  <div class="community-avatar">AK</div>
+                  <span>Amit Kumar</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="community-card">
+              <div class="community-image" style="background-image: url('https://images.unsplash.com/photo-1490818387583-1baba5e638af?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')"></div>
+              <div class="community-content">
+                <h3>Healthy Cooking Class</h3>
+                <p>Learn to prepare delicious and nutritious meals in under 30 minutes</p>
+                <div class="community-meta">
+                  <div class="community-avatar">PM</div>
+                  <span>Priya Mehta</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
       
@@ -1310,6 +1577,8 @@
     const notification = document.getElementById('notification');
     const notificationText = document.getElementById('notification-text');
     const exploreBtn = document.getElementById('explore-btn');
+    const userGreeting = document.getElementById('user-greeting');
+    const homeProtected = document.getElementById('home-protected');
     
     // Auth Tabs
     const authTabs = document.querySelectorAll('.auth-tab');
@@ -1375,6 +1644,15 @@
     // Add click event to nav links
     navLinks.forEach(link => {
       link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const page = this.dataset.page;
+        setActivePage(page);
+      });
+    });
+    
+    // Add click event to welcome buttons
+    document.querySelectorAll('.welcome-btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
         e.preventDefault();
         const page = this.dataset.page;
         setActivePage(page);
@@ -1541,15 +1819,18 @@
         // User is signed in
         authButtons.style.display = 'none';
         userInfo.style.display = 'flex';
-        userName.textContent = user.displayName || user.email;
-        userAvatar.textContent = user.displayName ? 
-          user.displayName.charAt(0).toUpperCase() : 
-          user.email.charAt(0).toUpperCase();
-          
+        const displayName = user.displayName || user.email.split('@')[0];
+        userName.textContent = displayName;
+        userGreeting.textContent = displayName;
+        userAvatar.textContent = displayName.charAt(0).toUpperCase();
+        
         // Show protected navigation links
         protectedLinks.forEach(link => {
           link.style.display = 'block';
         });
+        
+        // Show protected content
+        homeProtected.classList.add('unlocked');
       } else {
         // User is signed out
         authButtons.style.display = 'flex';
@@ -1559,6 +1840,9 @@
         protectedLinks.forEach(link => {
           link.style.display = 'none';
         });
+        
+        // Hide protected content
+        homeProtected.classList.remove('unlocked');
       }
     });
     
@@ -1583,6 +1867,7 @@
         if (!user) {
           authButtons.style.display = 'flex';
           userInfo.style.display = 'none';
+          homeProtected.classList.remove('unlocked');
         }
       });
     });
