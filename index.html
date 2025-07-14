@@ -473,6 +473,8 @@
       flex: 1;
       min-width: 300px;
       text-align: left;
+      overflow: hidden; /* Fix for content overflow */
+      margin-right: 15px; /* Added spacing */
     }
     
     .auth-content h2 {
@@ -486,6 +488,8 @@
       margin-bottom: 2rem;
       font-size: 1.1rem;
       line-height: 1.8;
+      text-align: justify; /* Justified text */
+      word-break: break-word; /* Prevent long words from breaking layout */
     }
     
     .auth-features {
@@ -515,7 +519,7 @@
     
     .auth-buttons-large {
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: wrap; /* Allow buttons to wrap */
       gap: 1.5rem;
       margin-top: 2rem;
     }
@@ -1769,20 +1773,20 @@
         </div>
       </section>
       
-      <!-- Auth Section -->
+      <!-- Auth Section - Fixed Layout -->
       <section class="auth-section" id="auth-section">
         <div class="container">
           <div class="auth-container">
             <div class="auth-content">
               <h2>Join Our Community</h2>
-              <p>Create an account to unlock the full potential of SkillSwap. Connect with peers, share your expertise, and discover new skills to learn.</p>
+              <p>Create an account to unlock the full potential of SkillSwap. Connect with peers, share your expertise, and discover new skills to learn. Our platform brings together students from Sanjay Ghodawat University in a vibrant learning ecosystem.</p>
               
               <div class="auth-features">
                 <div class="auth-feature">
                   <i class="fas fa-users"></i>
                   <div>
                     <h3>Build Connections</h3>
-                    <p>Connect with students who share your interests</p>
+                    <p>Connect with students who share your interests and academic goals</p>
                   </div>
                 </div>
                 
@@ -1790,7 +1794,7 @@
                   <i class="fas fa-lightbulb"></i>
                   <div>
                     <h3>Share Your Skills</h3>
-                    <p>Teach others what you're passionate about</p>
+                    <p>Teach others what you're passionate about and build your teaching portfolio</p>
                   </div>
                 </div>
                 
@@ -1798,7 +1802,7 @@
                   <i class="fas fa-calendar-alt"></i>
                   <div>
                     <h3>Join Sessions</h3>
-                    <p>Participate in skill-sharing sessions on campus</p>
+                    <p>Participate in skill-sharing sessions on campus or virtually</p>
                   </div>
                 </div>
               </div>
