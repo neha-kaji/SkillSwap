@@ -501,6 +501,8 @@
       text-align: left;
       overflow: hidden;
       margin-right: 15px;
+      /* Fix for mobile overflow */
+      word-break: break-word;
     }
     
     .auth-content h2 {
@@ -585,7 +587,9 @@
     .auth-image {
       flex: 1;
       min-width: 300px;
-      height: 320px;
+      /* FIX: Removed fixed height for better responsiveness */
+      height: auto;
+      min-height: 320px;
       background: url('https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center center/cover;
       border-radius: 15px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.07);
@@ -1471,6 +1475,29 @@
       .auth-buttons-large {
         flex-direction: column;
       }
+      
+      /* FIX: Adjust padding for smaller screens */
+      .auth-container {
+        padding: 1.5rem;
+      }
+      
+      .auth-content {
+        padding: 0 0.5rem;
+      }
+      
+      .auth-features {
+        gap: 1rem;
+      }
+      
+      .auth-feature {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .auth-buttons-large .auth-btn-large {
+        width: 100%;
+        justify-content: center;
+      }
     }
     
     @media (max-width: 576px) {
@@ -1543,6 +1570,27 @@
         right: 20px;
         width: 50px;
         height: 50px;
+      }
+      
+      /* FIX: Additional mobile adjustments */
+      .auth-container {
+        padding: 1rem;
+      }
+      
+      .auth-content p {
+        font-size: 1rem;
+        line-height: 1.6;
+      }
+      
+      .auth-feature i {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+      }
+      
+      .auth-btn-large {
+        padding: 1rem 1.5rem;
+        font-size: 1.1rem;
       }
     }
     
