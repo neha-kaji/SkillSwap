@@ -10,22 +10,22 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
   <style>
-    /* Dark Theme Variables */
+    /* Soft Pink & Peach Theme */
     :root {
-      --primary: #8a2be2; /* Purple accent */
-      --primary-dark: #6a1b9a;
-      --secondary: #bb86fc; /* Light purple */
-      --accent: #03dac6; /* Teal accent */
-      --dark-bg: #121212; /* Dark background */
-      --dark-surface: #1e1e1e; /* Card surfaces */
-      --dark-text: #e0e0e0; /* Light text */
-      --dark-text-secondary: #b0b0b0;
+      --primary: #FF9AA2; /* Soft pink */
+      --primary-dark: #FF7B89; /* Slightly darker pink */
+      --secondary: #FFB7B2; /* Peach */
+      --accent: #FFDAC1; /* Light peach */
+      --background: #FFF5F4; /* Very light pink background */
+      --surface: #FFFFFF; /* Card surfaces */
+      --text: #333333; /* Dark text */
+      --text-secondary: #666666; /* Secondary text */
       --success: #4CAF50;
       --warning: #FF9800;
       --error: #CF6679;
-      --form-bg: #2d2d2d;
-      --form-shadow: rgba(138, 43, 226, 0.2);
-      --university-color: #bb86fc;
+      --form-bg: #FFFFFF;
+      --form-shadow: rgba(255, 154, 162, 0.2);
+      --university-color: #FFB7B2;
       --meet-blue: #00897b;
       --meet-green: #43a047;
     }
@@ -39,21 +39,21 @@
     body {
       font-family: 'Poppins', sans-serif;
       line-height: 1.6;
-      color: var(--dark-text);
-      background-color: var(--dark-bg);
+      color: var(--text);
+      background-color: var(--background);
       position: relative;
       min-height: 100vh;
-      padding-bottom: 100px; /* Space for chatbot */
+      padding-bottom: 100px;
     }
     
     a {
       text-decoration: none;
-      color: var(--secondary);
+      color: var(--primary-dark);
       transition: all 0.3s ease;
     }
     
     a:hover {
-      color: var(--accent);
+      color: var(--primary);
     }
     
     .container {
@@ -63,14 +63,14 @@
       padding: 0 15px;
     }
     
-    /* Header Styles */
+    /* Header Styles - Reduced Height */
     .header {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      padding: 1rem 0;
+      padding: 0.6rem 0; /* Slightly reduced padding */
       position: sticky;
       top: 0;
       z-index: 1000;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
     
     .header .container {
@@ -82,38 +82,43 @@
     .logo {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.8rem;
+      transition: transform 0.3s ease;
+    }
+    
+    .logo:hover {
+      transform: scale(1.05);
     }
     
     .logo-img {
-      height: 40px;
+      height: 50px; /* Larger logo */
       width: auto;
       border-radius: 8px;
     }
     
     .logo-text {
-      font-size: 1.4rem;
+      font-size: 1.8rem; /* Larger text */
       font-weight: 700;
       color: white;
     }
     
     .nav {
       display: flex;
-      gap: 1rem;
+      gap: 1.2rem;
       align-items: center;
     }
     
     .nav a {
-      color: var(--dark-text);
+      color: white;
       font-weight: 500;
-      padding: 0.5rem 0;
+      padding: 0.6rem 0;
       position: relative;
       min-height: 48px;
       min-width: 48px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.9rem;
+      font-size: 1rem;
     }
     
     .nav a:hover {
@@ -141,66 +146,131 @@
       background: none;
       border: none;
       color: white;
-      font-size: 1.5rem;
+      font-size: 1.8rem; /* Larger icon */
       cursor: pointer;
+      z-index: 1001;
+      padding: 0.5rem;
+    }
+    
+    /* Side Navigation */
+    .side-nav {
+      position: fixed;
+      top: 0;
+      right: -300px; /* Start off-screen */
+      width: 280px;
+      height: 100%;
+      background: var(--surface);
+      box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+      z-index: 1000;
+      transition: right 0.3s ease;
+      padding: 80px 20px 20px;
+      overflow-y: auto;
+    }
+    
+    .side-nav.active {
+      right: 0;
+    }
+    
+    .side-nav a {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.2rem 1.5rem;
+      color: var(--text);
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      transition: all 0.3s;
+      font-size: 1.1rem;
+    }
+    
+    .side-nav a:hover {
+      background: var(--accent);
+      color: var(--primary-dark);
+    }
+    
+    .side-nav i {
+      width: 30px;
+      text-align: center;
+    }
+    
+    .close-nav {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 2rem;
+      background: none;
+      border: none;
+      color: var(--primary);
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.3s;
+    }
+    
+    .close-nav:hover {
+      background: rgba(255, 154, 162, 0.1);
     }
     
     /* Auth buttons */
     .auth-buttons {
       display: flex;
-      gap: 0.5rem;
+      gap: 0.8rem;
     }
     
     .auth-btn {
-      padding: 0.5rem 1rem;
+      padding: 0.8rem 1.5rem;
       border-radius: 50px;
       font-weight: 500;
       cursor: pointer;
       transition: all 0.3s ease;
-      min-height: 40px;
-      min-width: 40px;
+      min-height: 46px;
+      min-width: 46px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.9rem;
+      font-size: 1rem;
+      font-weight: 600;
     }
     
     .btn-login {
       background: transparent;
-      border: 2px solid var(--secondary);
-      color: var(--secondary);
+      border: 2px solid white;
+      color: white;
     }
     
     .btn-register {
-      background: var(--secondary);
-      color: var(--dark-bg);
+      background: white;
+      color: var(--primary-dark);
       border: none;
     }
     
     .btn-login:hover {
-      background: rgba(187, 134, 252, 0.1);
+      background: rgba(255, 255, 255, 0.1);
     }
     
     .btn-register:hover {
-      background: #a970f7;
+      background: rgba(255, 255, 255, 0.9);
     }
     
     .user-info {
       display: flex;
       align-items: center;
-      gap: 0.8rem;
+      gap: 1rem;
     }
     
     .user-avatar {
-      width: 36px;
-      height: 36px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       background: var(--secondary);
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 600;
-      color: var(--dark-bg);
+      color: var(--text);
+      font-size: 1.2rem;
     }
     
     /* Chatbot Styles */
@@ -210,14 +280,16 @@
       right: 20px;
       z-index: 1000;
       width: 100%;
-      max-width: 350px;
+      max-width: 380px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.15);
     }
     
     .chatbot-header {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: white;
-      padding: 15px;
-      border-radius: 15px 15px 0 0;
+      padding: 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -227,38 +299,37 @@
     .chatbot-header h3 {
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-size: 1.1rem;
+      gap: 12px;
+      font-size: 1.2rem;
     }
     
     .chatbot-header i {
       background: rgba(255, 255, 255, 0.2);
-      width: 30px;
-      height: 30px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
+      font-size: 1.1rem;
     }
     
     .chatbot-body {
-      background: var(--dark-surface);
-      border-radius: 0 0 15px 15px;
+      background: var(--surface);
       height: 0;
       overflow: hidden;
       transition: height 0.3s ease;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
       display: flex;
       flex-direction: column;
     }
     
     .chatbot-open .chatbot-body {
-      height: 400px;
+      height: 420px;
     }
     
     .chat-messages {
       flex: 1;
-      padding: 15px;
+      padding: 18px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
@@ -266,56 +337,59 @@
     }
     
     .message {
-      max-width: 80%;
-      padding: 10px 15px;
-      border-radius: 18px;
-      font-size: 0.95rem;
-      line-height: 1.4;
+      max-width: 85%;
+      padding: 12px 18px;
+      border-radius: 20px;
+      font-size: 1rem;
+      line-height: 1.5;
     }
     
     .user-message {
       background: var(--primary);
       color: white;
       align-self: flex-end;
-      border-bottom-right-radius: 5px;
+      border-bottom-right-radius: 8px;
     }
     
     .bot-message {
       background: var(--form-bg);
+      border: 1px solid rgba(0,0,0,0.05);
       align-self: flex-start;
-      border-bottom-left-radius: 5px;
+      border-bottom-left-radius: 8px;
     }
     
     .chat-input {
       display: flex;
-      padding: 10px 15px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      border-top: 1px solid rgba(0,0,0,0.05);
+      background: var(--accent);
     }
     
     .chat-input input {
       flex: 1;
-      padding: 12px 15px;
+      padding: 14px 18px;
       border-radius: 30px;
-      border: none;
+      border: 1px solid rgba(0,0,0,0.1);
       background: var(--form-bg);
-      color: var(--dark-text);
+      color: var(--text);
       font-family: 'Poppins', sans-serif;
-      font-size: 16px; /* Prevent mobile zoom */
+      font-size: 16px;
     }
     
     .chat-input button {
       background: var(--primary);
       color: white;
       border: none;
-      width: 50px;
-      height: 50px;
+      width: 54px;
+      height: 54px;
       border-radius: 50%;
-      margin-left: 10px;
+      margin-left: 12px;
       cursor: pointer;
       transition: all 0.3s ease;
       display: flex;
       align-items: center;
       justify-content: center;
+      font-size: 1.2rem;
     }
     
     .chat-input button:hover {
@@ -327,16 +401,16 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 5px 0;
+      padding: 8px 0;
     }
     
     .typing span {
-      width: 8px;
-      height: 8px;
-      background: var(--accent);
+      width: 10px;
+      height: 10px;
+      background: var(--primary);
       border-radius: 50%;
       display: inline-block;
-      margin: 0 2px;
+      margin: 0 3px;
       animation: bounce 1.3s infinite;
     }
     
@@ -348,97 +422,51 @@
       animation-delay: 0.3s;
     }
     
-    /* Skill rating */
-    .skill-rating {
-      display: flex;
-      gap: 3px;
-      margin-top: 5px;
-    }
-    
-    .rating-star {
-      color: var(--warning);
-      font-size: 0.9rem;
-    }
-    
-    /* Mobile Navigation */
-    .mobile-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--dark-surface);
-      display: flex;
-      justify-content: space-around;
-      padding: 10px 0;
-      z-index: 999;
-      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
-      display: none;
-    }
-    
-    .mobile-nav a {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-size: 0.8rem;
-      color: var(--dark-text-secondary);
-      padding: 5px;
-    }
-    
-    .mobile-nav a.active {
-      color: var(--accent);
-    }
-    
-    .mobile-nav i {
-      font-size: 1.2rem;
-      margin-bottom: 3px;
-    }
-    
     /* Hero Section */
     .hero {
       text-align: center;
       padding: 5rem 1rem;
-      background: linear-gradient(rgba(18, 18, 18, 0.9), rgba(18, 18, 18, 0.9)), 
+      background: linear-gradient(rgba(255, 245, 244, 0.9), rgba(255, 245, 244, 0.9)), 
                   url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
-      color: var(--dark-text);
+      color: var(--text);
       position: relative;
     }
     
     .hero h1 {
-      font-size: 3.5rem;
-      margin-bottom: 1rem;
-      font-weight: 700;
+      font-size: 3.2rem;
+      margin-bottom: 1.2rem;
+      font-weight: 800;
       animation: fadeInUp 1s ease;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
     }
     
     .hero p {
       font-size: 1.3rem;
       max-width: 700px;
-      margin: 0 auto 2rem;
+      margin: 0 auto 2.5rem;
       animation: fadeInUp 1s ease 0.2s forwards;
       opacity: 0;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-      color: var(--dark-text-secondary);
+      color: var(--text-secondary);
     }
     
     /* Auth Section */
     .auth-section {
-      background: var(--dark-surface);
+      background: var(--surface);
       padding: 4rem 0;
       text-align: center;
     }
     
     .auth-container {
-      background: linear-gradient(135deg, var(--dark-surface), #2a2a2a);
+      background: var(--surface);
       border-radius: 20px;
       padding: 3rem;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
       max-width: 900px;
       margin: 0 auto;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       gap: 2rem;
+      border: 1px solid rgba(255, 154, 162, 0.1);
     }
     
     .auth-content {
@@ -448,13 +476,13 @@
     }
     
     .auth-content h2 {
-      font-size: 2.2rem;
-      color: var(--secondary);
+      font-size: 2.3rem;
+      color: var(--primary-dark);
       margin-bottom: 1.5rem;
     }
     
     .auth-content p {
-      color: var(--dark-text-secondary);
+      color: var(--text-secondary);
       margin-bottom: 2rem;
       font-size: 1.1rem;
       line-height: 1.8;
@@ -463,22 +491,22 @@
     .auth-features {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
-      margin-bottom: 2rem;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
     }
     
     .auth-feature {
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: 1.2rem;
     }
     
     .auth-feature i {
       color: var(--primary);
-      font-size: 1.5rem;
-      background: rgba(138, 43, 226, 0.1);
-      width: 50px;
-      height: 50px;
+      font-size: 1.8rem;
+      background: rgba(255, 154, 162, 0.1);
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -498,13 +526,13 @@
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       display: flex;
       align-items: center;
-      gap: 0.8rem;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-      min-height: 48px;
-      min-width: 48px;
+      gap: 1rem;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.07);
+      min-height: 50px;
+      min-width: 50px;
     }
     
     .login-btn-large {
@@ -514,29 +542,29 @@
     }
     
     .register-btn-large {
-      background: var(--secondary);
-      color: var(--dark-bg);
-      border: none;
+      background: white;
+      color: var(--primary-dark);
+      border: 2px solid var(--primary);
     }
     
     .auth-btn-large:hover {
       transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
     }
     
     .auth-image {
       flex: 1;
       min-width: 300px;
-      height: 300px;
+      height: 320px;
       background: url('https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center center/cover;
       border-radius: 15px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.07);
     }
     
     /* Button Styles */
     .btn {
       display: inline-block;
-      padding: 0.8rem 1.8rem;
+      padding: 1rem 2.2rem;
       background-color: var(--primary);
       color: white;
       border: none;
@@ -544,108 +572,96 @@
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+      box-shadow: 0 4px 15px rgba(255, 154, 162, 0.3);
       animation: fadeInUp 1s ease 0.4s forwards;
       opacity: 0;
-      min-height: 48px;
-      min-width: 48px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      font-size: 1.1rem;
     }
     
     .btn:hover {
       background-color: var(--primary-dark);
       transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4);
-    }
-    
-    .btn-outline {
-      background: transparent;
-      border: 2px solid var(--secondary);
-      color: var(--secondary);
-      box-shadow: none;
-    }
-    
-    .btn-outline:hover {
-      background: rgba(187, 134, 252, 0.1);
-      color: var(--secondary);
+      box-shadow: 0 6px 20px rgba(255, 154, 162, 0.4);
     }
     
     /* Features Section */
     .features {
-      padding: 4rem 0;
-      background-color: var(--dark-surface);
+      padding: 5rem 0;
+      background-color: var(--surface);
     }
     
     .section-title {
       text-align: center;
-      margin-bottom: 3rem;
+      margin-bottom: 3.5rem;
       position: relative;
     }
     
     .section-title h2 {
-      font-size: 2rem;
-      color: var(--secondary);
+      font-size: 2.3rem;
+      color: var(--primary-dark);
       display: inline-block;
+      font-weight: 700;
     }
     
     .section-title h2::after {
       content: '';
       position: absolute;
-      bottom: -10px;
+      bottom: -15px;
       left: 50%;
       transform: translateX(-50%);
-      width: 80px;
-      height: 3px;
+      width: 100px;
+      height: 4px;
       background-color: var(--accent);
+      border-radius: 2px;
     }
     
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
+      gap: 2.5rem;
     }
     
     .card {
       background: var(--form-bg);
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      padding: 2.5rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
       transition: all 0.3s ease;
       text-align: center;
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 154, 162, 0.1);
     }
     
     .card:hover {
       transform: translateY(-10px);
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
       border-color: var(--primary);
     }
     
     .card i {
-      font-size: 2.5rem;
-      color: var(--accent);
-      margin-bottom: 1rem;
+      font-size: 3rem;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
     }
     
     .card h3 {
-      font-size: 1.3rem;
-      margin-bottom: 1rem;
-      color: var(--secondary);
+      font-size: 1.5rem;
+      margin-bottom: 1.2rem;
+      color: var(--primary-dark);
     }
     
     .card p {
-      color: var(--dark-text-secondary);
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      line-height: 1.7;
     }
     
     /* University Highlight */
     .university-highlight {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: white;
-      padding: 4rem 0;
+      padding: 5rem 0;
       text-align: center;
-      margin: 4rem 0;
+      margin: 5rem 0;
       position: relative;
       overflow: hidden;
     }
@@ -655,8 +671,8 @@
       position: absolute;
       top: -50px;
       left: -50px;
-      width: 150px;
-      height: 150px;
+      width: 200px;
+      height: 200px;
       border-radius: 50%;
       background: rgba(255,255,255,0.1);
     }
@@ -666,23 +682,24 @@
       position: absolute;
       bottom: -80px;
       right: -80px;
-      width: 200px;
-      height: 200px;
+      width: 250px;
+      height: 250px;
       border-radius: 50%;
       background: rgba(255,255,255,0.1);
     }
     
     .university-highlight h2 {
-      font-size: 2.2rem;
+      font-size: 2.5rem;
       margin-bottom: 1.5rem;
       position: relative;
       z-index: 1;
+      font-weight: 700;
     }
     
     .university-highlight p {
       max-width: 800px;
       margin: 0 auto 1.5rem;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       position: relative;
       z-index: 1;
       color: rgba(255, 255, 255, 0.9);
@@ -691,11 +708,11 @@
     .campus-image {
       width: 100%;
       max-width: 800px;
-      height: 300px;
-      margin: 2.5rem auto;
-      border-radius: 12px;
+      height: 350px;
+      margin: 3rem auto;
+      border-radius: 15px;
       overflow: hidden;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.1);
       background: url('uni.jpg') center center/cover;
       position: relative;
       z-index: 1;
@@ -710,63 +727,59 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.8);
+      background: rgba(0,0,0,0.5);
       z-index: 2000;
       justify-content: center;
       align-items: center;
     }
     
     .modal-container {
-      background: var(--dark-surface);
-      border-radius: 18px;
+      background: var(--surface);
+      border-radius: 20px;
       width: 90%;
-      max-width: 450px;
+      max-width: 500px;
       overflow: hidden;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.15);
       position: relative;
     }
     
     .auth-header {
       background: linear-gradient(to right, var(--primary), var(--primary-dark));
       color: white;
-      padding: 1.8rem;
+      padding: 2rem;
       text-align: center;
     }
     
     .auth-header h2 {
-      font-size: 1.6rem;
-      font-weight: 600;
+      font-size: 1.8rem;
+      font-weight: 700;
     }
     
     .auth-tabs {
       display: flex;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(0,0,0,0.05);
     }
     
     .auth-tab {
       flex: 1;
       text-align: center;
-      padding: 1.2rem;
+      padding: 1.3rem;
       cursor: pointer;
       transition: all 0.3s ease;
-      font-weight: 500;
+      font-weight: 600;
       background: var(--form-bg);
-      min-height: 48px;
-      min-width: 48px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--dark-text-secondary);
+      color: var(--text-secondary);
+      font-size: 1.1rem;
     }
     
     .auth-tab.active {
-      background: var(--dark-surface);
-      border-bottom: 3px solid var(--accent);
-      color: var(--secondary);
+      background: var(--surface);
+      border-bottom: 4px solid var(--accent);
+      color: var(--primary-dark);
     }
     
     .auth-body {
-      padding: 1.8rem;
+      padding: 2rem;
     }
     
     .auth-form {
@@ -778,71 +791,67 @@
     }
     
     .form-group {
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.8rem;
     }
     
     .form-group label {
       display: block;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.8rem;
       font-weight: 500;
-      color: var(--dark-text);
+      color: var(--text);
+      font-size: 1.1rem;
     }
     
     .form-control {
       width: 100%;
-      padding: 1rem 1.2rem;
-      border: 2px solid rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
+      padding: 1.2rem 1.5rem;
+      border: 2px solid rgba(0,0,0,0.05);
+      border-radius: 12px;
       font-family: 'Poppins', sans-serif;
-      font-size: 1rem;
+      font-size: 1.1rem;
       transition: all 0.3s ease;
       background: var(--form-bg);
-      color: var(--dark-text);
+      color: var(--text);
     }
     
     .form-control:focus {
       border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(3, 218, 198, 0.2);
+      box-shadow: 0 0 0 3px rgba(255, 218, 193, 0.3);
       outline: none;
     }
     
     .btn-auth {
       width: 100%;
-      padding: 1.1rem;
+      padding: 1.3rem;
       background: var(--primary);
       color: white;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
       margin-top: 1rem;
-      font-size: 1.05rem;
-      box-shadow: 0 4px 10px rgba(138, 43, 226, 0.3);
-      min-height: 48px;
-      min-width: 48px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 10px rgba(255, 154, 162, 0.3);
     }
     
     .btn-auth:hover {
       background: var(--primary-dark);
       transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(138, 43, 226, 0.4);
+      box-shadow: 0 6px 15px rgba(255, 154, 162, 0.4);
     }
     
     .auth-footer {
       text-align: center;
-      padding: 1.2rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      font-size: 0.95rem;
-      color: var(--dark-text-secondary);
+      padding: 1.5rem;
+      border-top: 1px solid rgba(0,0,0,0.05);
+      font-size: 1rem;
+      color: var(--text-secondary);
     }
     
     .auth-footer a {
-      color: var(--secondary);
-      font-weight: 500;
+      color: var(--primary-dark);
+      font-weight: 600;
     }
     
     .close-modal {
@@ -854,15 +863,13 @@
       color: white;
       font-size: 2rem;
       cursor: pointer;
-      width: 40px;
-      height: 40px;
+      width: 50px;
+      height: 50px;
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 50%;
       transition: all 0.3s ease;
-      min-height: 48px;
-      min-width: 48px;
     }
     
     .close-modal:hover {
@@ -875,7 +882,7 @@
       color: white;
       padding: 3rem 0 2rem;
       text-align: center;
-      margin-top: 4rem;
+      margin-top: 5rem;
       position: relative;
       overflow: hidden;
     }
@@ -885,8 +892,8 @@
       position: absolute;
       top: -50px;
       left: -50px;
-      width: 150px;
-      height: 150px;
+      width: 200px;
+      height: 200px;
       border-radius: 50%;
       background: rgba(255,255,255,0.05);
     }
@@ -895,31 +902,30 @@
       margin-bottom: 1rem;
       position: relative;
       z-index: 1;
-      color: rgba(255, 255, 255, 0.8);
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 1.1rem;
     }
     
     .social-links {
       display: flex;
       justify-content: center;
-      gap: 1.5rem;
-      margin-bottom: 1.5rem;
+      gap: 1.8rem;
+      margin-bottom: 2rem;
       position: relative;
       z-index: 1;
     }
     
     .social-links a {
-      font-size: 1.4rem;
+      font-size: 1.6rem;
       color: white;
       transition: all 0.3s ease;
-      width: 45px;
-      height: 45px;
+      width: 55px;
+      height: 55px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       background: rgba(255,255,255,0.1);
-      min-height: 48px;
-      min-width: 48px;
     }
     
     .social-links a:hover {
@@ -930,30 +936,32 @@
     
     .university-address {
       background: rgba(255,255,255,0.1);
-      padding: 1.5rem;
-      border-radius: 12px;
-      max-width: 600px;
-      margin: 1.5rem auto;
+      padding: 1.8rem;
+      border-radius: 15px;
+      max-width: 700px;
+      margin: 2rem auto;
       position: relative;
       z-index: 1;
+      font-size: 1.1rem;
     }
     
     /* Notification */
     .notification {
       position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 15px 25px;
-      border-radius: 8px;
+      top: 25px;
+      right: 25px;
+      padding: 18px 30px;
+      border-radius: 10px;
       color: white;
       font-weight: 500;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
       z-index: 3000;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       transform: translateX(120%);
       transition: transform 0.3s ease;
+      font-size: 1.1rem;
     }
     
     .notification.show {
@@ -969,7 +977,7 @@
     }
     
     .notification i {
-      font-size: 1.2rem;
+      font-size: 1.5rem;
     }
     
     /* Page Content */
@@ -982,81 +990,93 @@
     }
     
     /* Skills Page */
+    .skills-page .hero {
+      background: linear-gradient(rgba(255, 245, 244, 0.9), rgba(255, 245, 244, 0.9)), 
+                  url('https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+    }
+    
     .skills-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 2rem;
-      padding: 2rem 0;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2.5rem;
+      padding: 3rem 0;
     }
     
     .skill-card {
-      background: var(--form-bg);
-      border-radius: 10px;
+      background: var(--surface);
+      border-radius: 15px;
       overflow: hidden;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.07);
       transition: all 0.3s ease;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      width: 100%;
-      max-width: 300px;
+      border: 1px solid rgba(255, 154, 162, 0.1);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
     }
     
     .skill-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      transform: translateY(-8px);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.12);
       border-color: var(--primary);
     }
     
     .skill-image {
-      height: 180px;
+      height: 220px;
       background-size: cover;
       background-position: center;
     }
     
     .skill-content {
-      padding: 1.5rem;
+      padding: 1.8rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
     }
     
     .skill-content h3 {
-      color: var(--secondary);
-      margin-bottom: 0.5rem;
+      color: var(--primary-dark);
+      margin-bottom: 0.8rem;
+      font-size: 1.5rem;
     }
     
     .skill-content p {
-      color: var(--dark-text-secondary);
-      margin-bottom: 1rem;
-      min-height: 60px;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      flex: 1;
+      font-size: 1.1rem;
+      line-height: 1.6;
     }
     
     .skill-meta {
       display: flex;
       justify-content: space-between;
-      color: var(--accent);
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
+      color: var(--primary);
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      font-weight: 500;
     }
     
     .skill-actions {
       display: flex;
-      gap: 0.8rem;
+      gap: 1rem;
     }
     
     .btn-book {
       flex: 1;
-      padding: 0.6rem;
+      padding: 0.8rem;
       background: var(--primary);
       color: white;
       border: none;
-      border-radius: 6px;
-      font-weight: 500;
+      border-radius: 8px;
+      font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.5rem;
+      gap: 0.8rem;
       text-align: center;
-      font-size: 0.9rem;
+      font-size: 1rem;
     }
     
     .btn-book:hover {
@@ -1064,51 +1084,72 @@
     }
     
     /* Submit Page */
+    .submit-page .hero {
+      background: linear-gradient(rgba(255, 245, 244, 0.9), rgba(255, 245, 244, 0.9)), 
+                  url('https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+    }
+    
     .submit-form {
-      max-width: 600px;
+      max-width: 700px;
       margin: 2rem auto;
-      background: var(--form-bg);
-      padding: 2rem;
-      border-radius: 15px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      background: var(--surface);
+      padding: 3rem;
+      border-radius: 20px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+      border: 1px solid rgba(255, 154, 162, 0.1);
     }
     
     /* Contact Page */
+    .contact-page .hero {
+      background: linear-gradient(rgba(255, 245, 244, 0.9), rgba(255, 245, 244, 0.9)), 
+                  url('https://images.unsplash.com/photo-1534536281715-e28d76689b4d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+    }
+    
     .contact-container {
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
       display: flex;
-      gap: 2rem;
-      padding: 2rem 0;
+      gap: 2.5rem;
+      padding: 3rem 0;
     }
     
     .contact-info {
       flex: 1;
-      background: var(--form-bg);
-      padding: 2rem;
-      border-radius: 15px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      background: var(--surface);
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+      border: 1px solid rgba(255, 154, 162, 0.1);
     }
     
     .contact-info h3 {
-      color: var(--secondary);
-      margin-bottom: 1rem;
+      color: var(--primary-dark);
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
     }
     
     .contact-info p {
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.8rem;
       display: flex;
       align-items: center;
-      gap: 0.8rem;
-      color: var(--dark-text-secondary);
+      gap: 1rem;
+      color: var(--text-secondary);
+      font-size: 1.1rem;
     }
     
     .contact-form {
       flex: 1;
-      background: var(--form-bg);
-      padding: 2rem;
-      border-radius: 15px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      background: var(--surface);
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+      border: 1px solid rgba(255, 154, 162, 0.1);
+    }
+    
+    .contact-form h3 {
+      color: var(--primary-dark);
+      margin-bottom: 1.8rem;
+      font-size: 1.8rem;
     }
     
     /* Protected Content */
@@ -1121,24 +1162,25 @@
     }
     
     .locked-section {
-      background: var(--dark-surface);
-      border-radius: 15px;
-      padding: 3rem;
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 4rem;
       text-align: center;
-      max-width: 600px;
-      margin: 3rem auto;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      max-width: 700px;
+      margin: 4rem auto;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+      border: 1px solid rgba(255, 154, 162, 0.1);
     }
     
     .locked-icon {
-      font-size: 4rem;
+      font-size: 5rem;
       color: var(--accent);
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
     }
     
     /* Welcome Section */
     .welcome-section {
-      padding: 4rem 0;
+      padding: 5rem 0;
       text-align: center;
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: white;
@@ -1149,43 +1191,43 @@
     }
     
     .welcome-section h2 {
-      font-size: 2.5rem;
-      margin-bottom: 1.5rem;
+      font-size: 2.8rem;
+      margin-bottom: 1.8rem;
+      font-weight: 700;
     }
     
     .welcome-section p {
-      font-size: 1.2rem;
-      margin-bottom: 2.5rem;
+      font-size: 1.3rem;
+      margin-bottom: 3rem;
       max-width: 700px;
       margin-left: auto;
       margin-right: auto;
       color: rgba(255, 255, 255, 0.9);
+      line-height: 1.7;
     }
     
     .welcome-actions {
       display: flex;
       justify-content: center;
-      gap: 1.5rem;
+      gap: 2rem;
       flex-wrap: wrap;
     }
     
     .welcome-btn {
-      padding: 1rem 2rem;
+      padding: 1.2rem 2.5rem;
       border-radius: 50px;
       font-weight: 600;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       display: flex;
       align-items: center;
-      gap: 0.8rem;
+      gap: 1rem;
       transition: all 0.3s ease;
-      min-height: 48px;
-      min-width: 48px;
     }
     
     .btn-primary {
       background: white;
-      color: var(--primary);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      color: var(--primary-dark);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
     
     .btn-secondary {
@@ -1195,8 +1237,8 @@
     }
     
     .welcome-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
     }
     
     .btn-secondary:hover {
@@ -1205,248 +1247,113 @@
     
     /* Stats Section */
     .stats-section {
-      background: var(--dark-surface);
-      padding: 4rem 0;
+      background: var(--surface);
+      padding: 5rem 0;
       text-align: center;
     }
     
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 2rem;
-      margin-top: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2.5rem;
+      margin-top: 3rem;
     }
     
     .stat-card {
       background: var(--form-bg);
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      padding: 2.5rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.07);
+      border: 1px solid rgba(255, 154, 162, 0.1);
     }
     
     .stat-number {
-      font-size: 3rem;
-      font-weight: 700;
-      color: var(--accent);
-      margin-bottom: 0.5rem;
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 0.8rem;
     }
     
     .stat-text {
-      color: var(--dark-text-secondary);
+      color: var(--text-secondary);
+      font-size: 1.2rem;
     }
     
     /* Community Section */
     .community-section {
-      background: var(--dark-bg);
-      padding: 4rem 0;
+      background: var(--background);
+      padding: 5rem 0;
     }
     
     .community-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-      margin-top: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2.5rem;
+      margin-top: 3rem;
     }
     
     .community-card {
-      background: var(--form-bg);
-      border-radius: 12px;
+      background: var(--surface);
+      border-radius: 15px;
       overflow: hidden;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.07);
+      border: 1px solid rgba(255, 154, 162, 0.1);
+      transition: all 0.3s ease;
+    }
+    
+    .community-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.12);
     }
     
     .community-image {
-      height: 200px;
+      height: 240px;
       background-size: cover;
       background-position: center;
     }
     
     .community-content {
-      padding: 1.5rem;
+      padding: 2rem;
     }
     
     .community-content h3 {
-      color: var(--secondary);
-      margin-bottom: 0.8rem;
+      color: var(--primary-dark);
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
     }
     
     .community-content p {
-      color: var(--dark-text-secondary);
-      margin-bottom: 1rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      font-size: 1.1rem;
+      line-height: 1.7;
     }
     
     .community-meta {
       display: flex;
       align-items: center;
-      gap: 0.8rem;
-      color: var(--accent);
+      gap: 1rem;
+      color: var(--primary);
+      font-weight: 500;
     }
     
     .community-avatar {
-      width: 36px;
-      height: 36px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       background: var(--secondary);
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 600;
-      color: var(--dark-bg);
-    }
-    
-    /* Booking Section */
-    .booking-section {
-      background: var(--dark-surface);
-      padding: 4rem 0;
-    }
-    
-    .booking-container {
-      max-width: 800px;
-      margin: 0 auto;
-      display: flex;
-      gap: 2rem;
-    }
-    
-    .booking-details {
-      flex: 1;
-      background: var(--form-bg);
-      padding: 2rem;
-      border-radius: 15px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-    }
-    
-    .booking-form {
-      flex: 1;
-      background: var(--form-bg);
-      padding: 2rem;
-      border-radius: 15px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-    }
-    
-    .meet-info {
-      background: rgba(0, 137, 123, 0.1);
-      border-left: 4px solid var(--meet-blue);
-      padding: 1rem;
-      border-radius: 0 8px 8px 0;
-      margin: 1.5rem 0;
-    }
-    
-    .meet-link {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      color: var(--accent);
-      margin: 1rem 0;
-      font-weight: 500;
-    }
-    
-    .google-integration {
-      display: flex;
-      gap: 1rem;
-      margin-top: 1.5rem;
-    }
-    
-    .google-btn {
-      flex: 1;
-      padding: 0.8rem;
-      border-radius: 6px;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    
-    .calendar-btn {
-      background: rgba(66, 133, 244, 0.1);
-      color: #4285F4;
-      border: 1px solid rgba(66, 133, 244, 0.2);
-    }
-    
-    .meet-btn {
-      background: rgba(0, 137, 123, 0.1);
-      color: var(--meet-blue);
-      border: 1px solid rgba(0, 137, 123, 0.2);
-    }
-    
-    .google-btn:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
-    
-    /* Booking Card */
-    .booking-card {
-      background: var(--form-bg);
-      border-radius: 10px;
-      padding: 1.5rem;
-      margin-bottom: 1rem;
-      border-left: 4px solid var(--accent);
-      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-    }
-    
-    .booking-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-    
-    .booking-status {
-      padding: 0.3rem 0.8rem;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 500;
-    }
-    
-    .status-confirmed {
-      background: rgba(76, 175, 80, 0.1);
-      color: #4CAF50;
-    }
-    
-    .status-pending {
-      background: rgba(255, 152, 0, 0.1);
-      color: #FF9800;
+      color: var(--text);
+      font-size: 1.1rem;
     }
     
     /* Responsive Styles */
-    @media (max-width: 768px) {
-      .header .container {
-        flex-direction: column;
-        gap: 1rem;
-      }
-      
-      .nav {
-        width: 100%;
-        justify-content: center;
-        flex-wrap: wrap;
-        display: none;
-      }
-      
-      .nav.active {
-        display: flex;
-      }
-      
-      .menu-toggle {
-        display: block;
-      }
-      
+    @media (max-width: 992px) {
       .hero h1 {
-        font-size: 2.5rem;
-      }
-      
-      .grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .auth-container {
-        flex-direction: column;
-        padding: 2rem;
-      }
-      
-      .auth-image {
-        min-height: 250px;
+        font-size: 2.8rem;
       }
       
       .contact-container {
@@ -1457,37 +1364,70 @@
         flex-direction: column;
       }
       
-      .welcome-section h2 {
-        font-size: 2rem;
-      }
-      
-      .mobile-nav {
-        display: flex;
-      }
-      
-      /* Card alignment for skills grid on mobile */
-      .skills-grid {
+      .auth-container {
         flex-direction: column;
-        align-items: center;
       }
       
-      .skill-card {
-        max-width: 100%;
+      .auth-image {
+        min-height: 300px;
       }
     }
     
-    @media (max-width: 480px) {
+    @media (max-width: 768px) {
+      .header .container {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+      
+      .nav {
+        display: none;
+      }
+      
+      .menu-toggle {
+        display: block;
+      }
+      
       .hero h1 {
-        font-size: 2rem;
-        line-height: 1.2;
+        font-size: 2.5rem;
       }
       
       .hero p {
-        font-size: 1rem;
+        font-size: 1.2rem;
       }
       
-      .hero, .features, .auth-section, .university-highlight {
-        padding: 2rem 1rem;
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .logo-img {
+        height: 45px; /* Slightly larger on mobile */
+      }
+      
+      .logo-text {
+        font-size: 1.6rem;
+      }
+      
+      .section-title h2 {
+        font-size: 2rem;
+      }
+      
+      /* Skill cards in mobile view */
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .hero {
+        padding: 4rem 1rem;
+      }
+      
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+      
+      .hero p {
+        font-size: 1.1rem;
       }
       
       .auth-buttons-large {
@@ -1516,8 +1456,8 @@
         grid-template-columns: 1fr;
       }
       
-      .header .container {
-        padding: 0.5rem;
+      .logo-img {
+        height: 40px;
       }
       
       .logo-text {
@@ -1525,21 +1465,16 @@
       }
       
       .auth-btn {
-        padding: 0.4rem 0.8rem;
-        font-size: 0.9rem;
+        padding: 0.7rem 1.2rem;
+        font-size: 0.95rem;
       }
       
       .footer {
-        padding: 2rem 0;
+        padding: 2.5rem 0;
       }
       
-      .university-highlight::before,
-      .university-highlight::after {
-        display: none;
-      }
-      
-      .submit-form, .contact-form {
-        padding: 1.5rem;
+      .submit-form, .contact-form, .contact-info {
+        padding: 2rem;
       }
       
       /* Chatbot mobile fixes */
@@ -1558,16 +1493,6 @@
       
       .chatbot-open .chatbot-body {
         height: 60vh;
-      }
-      
-      .chat-input button {
-        width: 50px;
-        height: 50px;
-      }
-      
-      /* Prevent zooming on input focus in mobile browsers */
-      input, select, textarea {
-        font-size: 16px;
       }
     }
     
@@ -1588,48 +1513,8 @@
         transform: translateY(0);
       }
       50% {
-        transform: translateY(-5px);
+        transform: translateY(-8px);
       }
-    }
-    
-    /* Google Meet style elements */
-    .meet-header {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-    
-    .meet-logo {
-      width: 50px;
-      height: 50px;
-      background: linear-gradient(135deg, var(--meet-blue), var(--meet-green));
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-    
-    .meet-badge {
-      background: rgba(0, 137, 123, 0.2);
-      color: var(--meet-blue);
-      padding: 0.3rem 0.8rem;
-      border-radius: 20px;
-      font-size: 0.9rem;
-      font-weight: 500;
-    }
-    
-    .session-timer {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: rgba(255, 255, 255, 0.05);
-      padding: 0.5rem 1rem;
-      border-radius: 30px;
-      margin: 1rem 0;
     }
   </style>
 </head>
@@ -1638,7 +1523,7 @@
   <header class="header">
     <div class="container">
       <div class="logo">
-        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik0xMiwyQzYuNDgsMiwyLDYuNDgsMiwxMnM0LjQ4LDEwLDEwLDEwczEwLTQuNDgsMTAtMTBTMTcuNTIsMiwxMiwyeiBNMTAsMTUuNWwtMS40MSwxLjQxTDUuMDksMTJsMS40MS0xLjQxTDEwLDE1LjV6IE0xNCw4LjVsMS40MS0xLjQxTDE4LjksMTJsLTEuNDEsMS40MUwxNCw4LjV6IE0xMiwxNS41Yy0xLjkzLDAtMy41LTEuNTctMy41LTMuNXMxLjU3LTMuNSwzLjUtMy41czMuNSwxLjU3LDMuNSwzLjVTMTMuOTMsMTUuNSwxMiwxNS41eiIvPjwvc3ZnPg==" alt="SkillSwap Logo" class="logo-img">
+        <img src="logo.png" alt="SkillSwap Logo" class="logo-img">
         <span class="logo-text">SkillSwap</span>
       </div>
       <button class="menu-toggle" id="menu-toggle">
@@ -1665,8 +1550,9 @@
     </div>
   </header>
 
-  <!-- Mobile Navigation -->
-  <nav class="mobile-nav">
+  <!-- Side Navigation -->
+  <div class="side-nav" id="side-nav">
+    <button class="close-nav" id="close-nav">&times;</button>
     <a href="#" class="active" data-page="home">
       <i class="fas fa-home"></i>
       <span>Home</span>
@@ -1687,7 +1573,11 @@
       <i class="fas fa-envelope"></i>
       <span>Contact</span>
     </a>
-  </nav>
+    <div class="auth-buttons" id="mobile-auth-buttons" style="margin-top: 20px; padding: 0 20px;">
+      <button class="auth-btn btn-login" id="mobile-login-btn" style="width: 100%; margin-bottom: 10px;">Login</button>
+      <button class="auth-btn btn-register" id="mobile-register-btn" style="width: 100%;">Register</button>
+    </div>
+  </div>
 
   <!-- Chatbot -->
   <div class="chatbot-container" id="chatbot-container">
@@ -1788,7 +1678,7 @@
       <!-- Welcome Section (Visible after login) -->
       <section class="welcome-section protected-content" id="home-protected">
         <div class="container">
-          <h2>Welcome back, <span id="user-greeting">Neha</span>!</h2>
+          <h2>Welcome, <span id="user-greeting">Neha</span>!</h2>
           <p>We're excited to have you back! Discover new skills shared by peers or contribute your expertise to help others grow.</p>
           
           <div class="welcome-actions">
@@ -1940,17 +1830,17 @@
             <div class="card">
               <i class="fas fa-chalkboard-teacher"></i>
               <h3>Offer a Skill</h3>
-              <p>Share what you're great at – from coding to cooking! Empower others with your knowledge.</p>
+              <p>Share what you're great at – from coding to cooking! Empower others with your knowledge and build your teaching experience.</p>
             </div>
             <div class="card">
               <i class="fas fa-lightbulb"></i>
               <h3>Learn Something New</h3>
-              <p>Pick up a new hobby, subject, or technical skill from peers who are passionate to teach.</p>
+              <p>Pick up a new hobby, subject, or technical skill from peers who are passionate to teach. Expand your knowledge beyond the classroom.</p>
             </div>
             <div class="card">
               <i class="fas fa-users"></i>
               <h3>Grow Together</h3>
-              <p>Join a growing community of learners and sharers. Build connections that last beyond college.</p>
+              <p>Join a growing community of learners and sharers. Build connections that last beyond college and create valuable networking opportunities.</p>
             </div>
           </div>
         </div>
@@ -1961,10 +1851,10 @@
       <div class="container">
         <h2>Sanjay Ghodawat University</h2>
         <p>Located in the beautiful town of Atigre, Kolhapur, our campus provides the perfect environment for learning and skill development.</p>
-        <p>Join SkillSwap to connect with fellow students and enhance your university experience.</p>
-    <div class="campus-image"></div>
-  </div>
-</section>
+        <p>Join SkillSwap to connect with fellow students and enhance your university experience through collaborative learning.</p>
+        <div class="campus-image"></div>
+      </div>
+    </section>
     </div>
 
     <!-- Skills Page -->
@@ -1987,7 +1877,7 @@
             <div class="skill-image" style="background-image: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')"></div>
             <div class="skill-content">
               <h3>Web Development</h3>
-              <p>Learn HTML, CSS, JavaScript and modern frameworks from experienced developers.</p>
+              <p>Learn HTML, CSS, JavaScript and modern frameworks from experienced developers. Perfect for beginners looking to start their coding journey.</p>
               <div class="skill-meta">
                 <span><i class="fas fa-user"></i> Raj P.</span>
                 <span><i class="fas fa-users"></i> 12 learners</span>
@@ -2004,7 +1894,7 @@
             <div class="skill-image" style="background-image: url('https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')"></div>
             <div class="skill-content">
               <h3>Graphic Design</h3>
-              <p>Master Photoshop, Illustrator and design principles with hands-on projects.</p>
+              <p>Master Photoshop, Illustrator and design principles with hands-on projects. Create stunning visuals and build your design portfolio.</p>
               <div class="skill-meta">
                 <span><i class="fas fa-user"></i> Priya S.</span>
                 <span><i class="fas fa-users"></i> 8 learners</span>
@@ -2021,7 +1911,7 @@
             <div class="skill-image" style="background-image: url('https://images.unsplash.com/photo-1515879218367-8466d910aaa4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')"></div>
             <div class="skill-content">
               <h3>Python Programming</h3>
-              <p>From basics to data analysis, learn Python with practical examples.</p>
+              <p>From basics to data analysis, learn Python with practical examples. Ideal for students interested in data science and automation.</p>
               <div class="skill-meta">
                 <span><i class="fas fa-user"></i> Amit K.</span>
                 <span><i class="fas fa-users"></i> 15 learners</span>
@@ -2038,7 +1928,7 @@
             <div class="skill-image" style="background-image: url('https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')"></div>
             <div class="skill-content">
               <h3>Cooking Basics</h3>
-              <p>Learn to cook delicious and healthy meals with simple ingredients.</p>
+              <p>Learn to cook delicious and healthy meals with simple ingredients. Perfect for students living away from home for the first time.</p>
               <div class="skill-meta">
                 <span><i class="fas fa-user"></i> Neha M.</span>
                 <span><i class="fas fa-users"></i> 20 learners</span>
@@ -2050,123 +1940,38 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Bookings Page -->
-    <div id="bookings-page" class="page-content">
-      <section class="hero">
-        <div class="container">
-          <h1>My Learning Sessions</h1>
-          <p>Manage your booked skill sessions and join virtual meetings</p>
-        </div>
-      </section>
-
-      <div class="container">
-        <div class="booking-container">
-          <div class="booking-details">
-            <h2>Upcoming Sessions</h2>
-            
-            <div class="booking-card">
-              <div class="booking-header">
-                <h3>Web Development</h3>
-                <div class="booking-status status-confirmed">Confirmed</div>
+          
+          <div class="skill-card">
+            <div class="skill-image" style="background-image: url('https://images.unsplash.com/photo-1545235617-9465d2a55698?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')"></div>
+            <div class="skill-content">
+              <h3>Digital Marketing</h3>
+              <p>Learn SEO, social media marketing, and content strategy. Build skills that are valuable in today's digital economy.</p>
+              <div class="skill-meta">
+                <span><i class="fas fa-user"></i> Vikram R.</span>
+                <span><i class="fas fa-users"></i> 14 learners</span>
               </div>
-              <p><i class="fas fa-user"></i> Mentor: Raj P.</p>
-              <p><i class="fas fa-calendar"></i> Date: July 15, 2023</p>
-              <p><i class="fas fa-clock"></i> Time: 3:00 PM - 4:30 PM</p>
-              
-              <div class="meet-info">
-                <h4>Virtual Session</h4>
-                <p>Join the session using Google Meet:</p>
-                <a href="#" class="meet-link">
-                  <i class="fab fa-google"></i>
-                  https://meet.google.com/abc-defg-hij
-                </a>
-                <div class="session-timer">
-                  <i class="fas fa-hourglass-half"></i>
-                  <span>Session starts in 2 days, 3 hours</span>
-                </div>
-              </div>
-              
-              <div class="google-integration">
-                <button class="google-btn calendar-btn">
-                  <i class="fas fa-calendar-plus"></i> Add to Calendar
-                </button>
-                <button class="google-btn meet-btn">
-                  <i class="fab fa-google"></i> Join Meeting
+              <div class="skill-actions">
+                <button class="btn-book" data-skill="Digital Marketing">
+                  <i class="fas fa-calendar-check"></i> Book Session
                 </button>
               </div>
-            </div>
-            
-            <div class="booking-card">
-              <div class="booking-header">
-                <h3>Graphic Design</h3>
-                <div class="booking-status status-pending">Pending</div>
-              </div>
-              <p><i class="fas fa-user"></i> Mentor: Priya S.</p>
-              <p><i class="fas fa-calendar"></i> Date: July 18, 2023</p>
-              <p><i class="fas fa-clock"></i> Time: 11:00 AM - 12:30 PM</p>
-              
-              <p>Your session request is pending mentor confirmation.</p>
             </div>
           </div>
           
-          <div class="booking-form">
-            <h2>Book a New Session</h2>
-            <form id="booking-form">
-              <div class="form-group">
-                <label for="booking-skill">Select Skill</label>
-                <select id="booking-skill" class="form-control" required>
-                  <option value="">Select a skill</option>
-                  <option value="Web Development">Web Development</option>
-                  <option value="Graphic Design">Graphic Design</option>
-                  <option value="Python Programming">Python Programming</option>
-                  <option value="Cooking Basics">Cooking Basics</option>
-                </select>
+          <div class="skill-card">
+            <div class="skill-image" style="background-image: url('https://images.unsplash.com/photo-1511376777868-611b54f68947?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')"></div>
+            <div class="skill-content">
+              <h3>Mobile App Development</h3>
+              <p>Create Android and iOS apps using modern frameworks. Turn your ideas into real applications with hands-on guidance.</p>
+              <div class="skill-meta">
+                <span><i class="fas fa-user"></i> Sanjay T.</span>
+                <span><i class="fas fa-users"></i> 9 learners</span>
               </div>
-              
-              <div class="form-group">
-                <label for="booking-date">Preferred Date</label>
-                <input type="date" id="booking-date" class="form-control" required>
+              <div class="skill-actions">
+                <button class="btn-book" data-skill="Mobile App Development">
+                  <i class="fas fa-calendar-check"></i> Book Session
+                </button>
               </div>
-              
-              <div class="form-group">
-                <label for="booking-time">Preferred Time</label>
-                <input type="time" id="booking-time" class="form-control" required>
-              </div>
-              
-              <div class="form-group">
-                <label for="booking-duration">Session Duration</label>
-                <select id="booking-duration" class="form-control" required>
-                  <option value="30">30 minutes</option>
-                  <option value="60" selected>60 minutes</option>
-                  <option value="90">90 minutes</option>
-                  <option value="120">120 minutes</option>
-                </select>
-              </div>
-              
-              <div class="form-group">
-                <label for="booking-notes">Additional Notes</label>
-                <textarea id="booking-notes" class="form-control" rows="3" placeholder="Any specific topics you want to focus on?"></textarea>
-              </div>
-              
-              <button type="submit" class="btn-auth">
-                <i class="fas fa-calendar-check"></i> Book Session
-              </button>
-            </form>
-            
-            <div class="meet-info" style="margin-top: 2rem;">
-              <div class="meet-header">
-                <div class="meet-logo">G</div>
-                <div>
-                  <h3>Virtual Session</h3>
-                  <div class="meet-badge">Google Meet Integrated</div>
-                </div>
-              </div>
-              <p>All sessions include a Google Meet link for virtual learning. The link will be automatically generated when your session is confirmed.</p>
-              <p>You'll receive a calendar invite with the meeting link before your session starts.</p>
             </div>
           </div>
         </div>
@@ -2324,13 +2129,10 @@
     const auth = firebase.auth();
     const db = firebase.firestore();
 
-    // Gemini API Integration
-    const GEMINI_API_KEY = "AIzaSyCE9lu1_4-6rG8yrSClMhc7NHda6Kx8PDc"; 
-    const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
-    
     // DOM Elements
     const menuToggle = document.getElementById('menu-toggle');
-    const mainNav = document.getElementById('main-nav');
+    const sideNav = document.getElementById('side-nav');
+    const closeNav = document.getElementById('close-nav');
     const chatbotToggle = document.getElementById('chatbot-toggle');
     const chatbotBody = document.getElementById('chatbot-body');
     const chatbotIcon = document.getElementById('chatbot-icon');
@@ -2341,7 +2143,11 @@
     
     // Mobile menu toggle
     menuToggle.addEventListener('click', () => {
-      mainNav.classList.toggle('active');
+      sideNav.classList.toggle('active');
+    });
+    
+    closeNav.addEventListener('click', () => {
+      sideNav.classList.remove('active');
     });
     
     // Chatbot toggle
@@ -2351,39 +2157,42 @@
       chatbotIcon.classList.toggle('fa-chevron-up');
     });
     
-    // Send message to Gemini API
-    async function sendToGemini(message) {
-      try {
-        const response = await fetch(GEMINI_API_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            contents: [{
-              parts: [{
-                text: `You are a helpful assistant for SkillSwap, a platform for students to share skills. 
-                The platform allows users to offer skills, book learning sessions, and connect with peers. 
-                Respond helpfully to this question: ${message}`
-              }]
-            }]
-          })
-        });
-        
-        if (!response.ok) {
-          throw new Error(`API request failed with status ${response.status}`);
-        }
-        
-        const data = await response.json();
-        if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
-          throw new Error('Unexpected response format from Gemini API');
-        }
-        
-        return data.candidates[0].content.parts[0].text;
-      } catch (error) {
-        console.error('Error calling Gemini API:', error);
-        return "I'm having trouble connecting right now. Please try again later.";
+    // Predefined chatbot responses
+    const chatbotResponses = {
+      "hi": "Hello! How can I help you with SkillSwap today?",
+      "hello": "Hi there! What would you like to know about our platform?",
+      "help": "I can help you with information about available skills, how to book sessions, or how to submit your own skill. What do you need help with?",
+      "skills": "We have various skills available including Web Development, Graphic Design, Python Programming, Cooking Basics, and more. You can browse all skills on our Skills page.",
+      "book": "To book a session, go to the Skills page and click 'Book Session' on the skill you're interested in. You'll be able to select a date and time that works for you.",
+      "submit": "To submit your own skill, go to the 'Submit Skill' page and fill out the form with details about your skill, category, and description.",
+      "contact": "You can contact us through the Contact page or email us at support@skillswap.com. Our team will get back to you within 24 hours.",
+      "default": "I'm here to help you with SkillSwap! You can ask about available skills, how to book a session, or how to submit your own skill to teach."
+    };
+    
+    // Get chatbot response
+    function getChatbotResponse(message) {
+      const lowerMsg = message.toLowerCase();
+      
+      if (lowerMsg.includes("hi") || lowerMsg.includes("hello")) {
+        return chatbotResponses.hi;
       }
+      if (lowerMsg.includes("help")) {
+        return chatbotResponses.help;
+      }
+      if (lowerMsg.includes("skill")) {
+        return chatbotResponses.skills;
+      }
+      if (lowerMsg.includes("book")) {
+        return chatbotResponses.book;
+      }
+      if (lowerMsg.includes("submit") || lowerMsg.includes("teach")) {
+        return chatbotResponses.submit;
+      }
+      if (lowerMsg.includes("contact") || lowerMsg.includes("support")) {
+        return chatbotResponses.contact;
+      }
+      
+      return chatbotResponses.default;
     }
     
     // Add message to chat
@@ -2397,7 +2206,7 @@
     }
     
     // Handle user message
-    async function handleUserMessage() {
+    function handleUserMessage() {
       const message = userInput.value.trim();
       if (!message) return;
       
@@ -2412,22 +2221,15 @@
       chatMessages.appendChild(typingIndicator);
       chatMessages.scrollTop = chatMessages.scrollHeight;
       
-      try {
-        // Get response from Gemini
-        const response = await sendToGemini(message);
-        
+      // Simulate thinking time
+      setTimeout(() => {
         // Remove typing indicator
         chatMessages.removeChild(typingIndicator);
         
-        // Add bot response
+        // Get and add bot response
+        const response = getChatbotResponse(message);
         addMessage(response);
-      } catch (error) {
-        // Remove typing indicator
-        chatMessages.removeChild(typingIndicator);
-        
-        // Add error message
-        addMessage("I'm having trouble connecting right now. Please try again later.");
-      }
+      }, 1500);
     }
     
     // Event listeners for chat
@@ -2436,19 +2238,12 @@
       if (e.key === 'Enter') handleUserMessage();
     });
     
-    // Keyboard handling for mobile
-    window.addEventListener('resize', () => {
-      const input = document.querySelector('.chat-input input');
-      if (document.activeElement === input) {
-        document.querySelector('.chatbot-container').style.position = 'fixed';
-        document.querySelector('.chatbot-container').style.bottom = '0';
-      }
-    });
-    
     // DOM Elements
     const authModal = document.getElementById('auth-modal');
     const loginBtn = document.getElementById('login-btn');
     const registerBtn = document.getElementById('register-btn');
+    const mobileLoginBtn = document.getElementById('mobile-login-btn');
+    const mobileRegisterBtn = document.getElementById('mobile-register-btn');
     const loginBtnLarge = document.getElementById('login-btn-large');
     const registerBtnLarge = document.getElementById('register-btn-large');
     const closeModal = document.getElementById('close-modal');
@@ -2467,7 +2262,6 @@
     const userGreeting = document.getElementById('user-greeting');
     const homeProtected = document.getElementById('home-protected');
     const authSection = document.getElementById('auth-section');
-    const bookingForm = document.getElementById('booking-form');
     
     // Auth Tabs
     const authTabs = document.querySelectorAll('.auth-tab');
@@ -2477,7 +2271,6 @@
     const pages = {
       home: document.getElementById('home-page'),
       skills: document.getElementById('skills-page'),
-      bookings: document.getElementById('bookings-page'),
       submit: document.getElementById('submit-page'),
       contact: document.getElementById('contact-page')
     };
@@ -2500,7 +2293,7 @@
     // Set active page
     function setActivePage(page) {
       // Check if page requires authentication
-      const protectedPages = ['skills', 'bookings', 'submit', 'contact'];
+      const protectedPages = ['skills', 'submit', 'contact'];
       const user = auth.currentUser;
       
       if (protectedPages.includes(page) && !user) {
@@ -2530,6 +2323,9 @@
         }
       });
       
+      // Close side nav on mobile
+      sideNav.classList.remove('active');
+      
       // Scroll to top
       window.scrollTo(0, 0);
     }
@@ -2543,8 +2339,8 @@
       });
     });
     
-    // Add click event to mobile nav links
-    document.querySelectorAll('.mobile-nav a').forEach(link => {
+    // Add click event to side nav links
+    document.querySelectorAll('.side-nav a').forEach(link => {
       link.addEventListener('click', function(e) {
         e.preventDefault();
         const page = this.dataset.page;
@@ -2566,8 +2362,7 @@
       btn.addEventListener('click', function(e) {
         e.preventDefault();
         const skill = this.dataset.skill;
-        document.getElementById('booking-skill').value = skill;
-        setActivePage('bookings');
+        showNotification(`Booking session for ${skill}`, true);
       });
     });
     
@@ -2577,6 +2372,7 @@
     // Auth Modal Functions
     function openAuthModal() {
       authModal.style.display = 'flex';
+      sideNav.classList.remove('active');
     }
     
     function closeAuthModal() {
@@ -2610,6 +2406,16 @@
     });
     
     registerBtn.addEventListener('click', () => {
+      openAuthModal();
+      switchTab('register');
+    });
+    
+    mobileLoginBtn.addEventListener('click', () => {
+      openAuthModal();
+      switchTab('login');
+    });
+    
+    mobileRegisterBtn.addEventListener('click', () => {
       openAuthModal();
       switchTab('register');
     });
@@ -2686,13 +2492,6 @@
           showNotification("Account created successfully!");
           closeAuthModal();
           registerForm.reset();
-          
-          // Create user document in Firestore
-          return db.collection('users').doc(auth.currentUser.uid).set({
-            name: name,
-            email: email,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          });
         })
         .catch(err => {
           showNotification(err.message, false);
@@ -2732,12 +2531,13 @@
     // Track auth state
     auth.onAuthStateChanged(user => {
       const protectedLinks = document.querySelectorAll('.nav-link.protected-link');
-      const mobileProtectedLinks = document.querySelectorAll('.mobile-nav a.protected-link');
+      const sideProtectedLinks = document.querySelectorAll('.side-nav a.protected-link');
       
       if (user) {
         currentUser = user;
         // User is signed in
         authButtons.style.display = 'none';
+        document.getElementById('mobile-auth-buttons').style.display = 'none';
         userInfo.style.display = 'flex';
         const displayName = user.displayName || user.email.split('@')[0];
         userName.textContent = displayName;
@@ -2749,8 +2549,8 @@
           link.style.display = 'block';
         });
         
-        mobileProtectedLinks.forEach(link => {
-          link.style.display = 'flex';
+        sideProtectedLinks.forEach(link => {
+          link.style.display = 'block';
         });
         
         // Show protected content
@@ -2760,13 +2560,11 @@
         if (authSection) {
           authSection.style.display = 'none';
         }
-        
-        // Load user bookings
-        loadUserBookings();
       } else {
         currentUser = null;
         // User is signed out
         authButtons.style.display = 'flex';
+        document.getElementById('mobile-auth-buttons').style.display = 'flex';
         userInfo.style.display = 'none';
         
         // Hide protected navigation links
@@ -2774,7 +2572,7 @@
           link.style.display = 'none';
         });
         
-        mobileProtectedLinks.forEach(link => {
+        sideProtectedLinks.forEach(link => {
           link.style.display = 'none';
         });
         
@@ -2788,80 +2586,11 @@
       }
     });
     
-    // Booking functions
-    function generateMeetLink() {
-      const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-      let code = '';
-      for (let i = 0; i < 10; i++) {
-        code += chars.charAt(Math.floor(Math.random() * chars.length));
-      }
-      return `https://meet.google.com/${code}`;
-    }
-    
-    function generateCalendarLink(booking) {
-      // Format dates for Google Calendar
-      const startDate = new Date(`${booking.date}T${booking.time}:00`);
-      const endDate = new Date(startDate);
-      endDate.setMinutes(endDate.getMinutes() + parseInt(booking.duration));
-      
-      const formatDate = (date) => {
-        return date.toISOString().replace(/-|:|\.\d\d\d/g, '');
-      };
-      
-      const title = `SkillSwap: ${booking.skill} Session`;
-      const details = `Session with ${currentUser.displayName} for ${booking.skill}`;
-      
-      return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${formatDate(startDate)}/${formatDate(endDate)}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(booking.meetLink)}`;
-    }
-    
-    // Handle booking form submission
-    bookingForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      
-      if (!currentUser) {
-        showNotification('Please login to book a session', false);
-        return;
-      }
-      
-      const booking = {
-        skill: document.getElementById('booking-skill').value,
-        date: document.getElementById('booking-date').value,
-        time: document.getElementById('booking-time').value,
-        duration: document.getElementById('booking-duration').value,
-        notes: document.getElementById('booking-notes').value,
-        status: 'pending',
-        userId: currentUser.uid,
-        userName: currentUser.displayName,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        meetLink: generateMeetLink()
-      };
-      
-      // Add booking to Firestore
-      db.collection('bookings').add(booking)
-        .then(() => {
-          showNotification('Session booked successfully!');
-          bookingForm.reset();
-          loadUserBookings();
-        })
-        .catch(error => {
-          showNotification('Error booking session: ' + error.message, false);
-        });
-    });
-    
-    // Load user bookings
-    function loadUserBookings() {
-      if (!currentUser) return;
-      
-      // In a real app, we would fetch from Firestore
-      // For demo, we'll just simulate with local data
-    }
-    
     // Form submission handlers
     document.getElementById('skill-form')?.addEventListener('submit', (e) => {
       e.preventDefault();
       showNotification("Skill submitted successfully! We'll review it soon.");
       e.target.reset();
-      setActivePage('skills');
     });
     
     document.getElementById('contact-form')?.addEventListener('submit', (e) => {
@@ -2870,41 +2599,8 @@
       e.target.reset();
     });
     
-    // Google Meet join buttons
-    document.querySelectorAll('.meet-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const meetLink = e.target.closest('.booking-card').querySelector('.meet-link').href;
-        window.open(meetLink, '_blank');
-      });
-    });
-    
-    // Google Calendar add buttons
-    document.querySelectorAll('.calendar-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const bookingCard = e.target.closest('.booking-card');
-        const booking = {
-          skill: bookingCard.querySelector('h3').textContent,
-          date: bookingCard.querySelector('p:nth-child(3)').textContent.split(': ')[1],
-          time: bookingCard.querySelector('p:nth-child(4)').textContent.split(': ')[1].split(' - ')[0],
-          duration: 60, // Default duration for demo
-          meetLink: bookingCard.querySelector('.meet-link').href
-        };
-        
-        const calendarLink = generateCalendarLink(booking);
-        window.open(calendarLink, '_blank');
-      });
-    });
-    
     // Initialize the app
     document.addEventListener('DOMContentLoaded', () => {
-      // Set min date for booking form
-      const today = new Date();
-      const tomorrow = new Date(today);
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      document.getElementById('booking-date').min = tomorrow.toISOString().split('T')[0];
-      
       // Check if user is logged in
       auth.onAuthStateChanged(user => {
         if (!user) {
